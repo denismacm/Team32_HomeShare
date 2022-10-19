@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1044366855458",
+    "project_id": "team32-homeshare",
+    "storage_bucket": "team32-homeshare.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044366855458:android:321803951bfa35f30a697b",
+        "android_client_info": {
+          "package_name": "com.hfad.team32_homeshare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044366855458-6uidgp5ne418fson37ur8mioij7jlm9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD9v8c5nGdeuNU7D9cZGPi4S4kkDsIi_s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044366855458-6uidgp5ne418fson37ur8mioij7jlm9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
