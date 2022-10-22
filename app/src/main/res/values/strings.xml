@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Team32_HomeShare</string>
+    <string name="responses">Responses</string>
     <string name="don_t_have_an_account_register_here">Don\'t have an account? <b>Register here.</b></string>
     <string name="login">Login</string>
     <string name="password">Password</string>
