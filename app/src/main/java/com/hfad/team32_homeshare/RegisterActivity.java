@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.hfad.team32_homeshare.databinding.ActivityRegisterBinding;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -28,10 +30,11 @@ public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
+    private DatabaseReference mDatabase;
 
     private ActionBar actionBar;
 
-    private String email = "", password = "";
+    private String email = "", password1 = "", password2 = "", fullName = "", phone = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Initialize FireBase auth
         firebaseAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // configure progress dialog
         progressDialog = new ProgressDialog(this);
@@ -70,15 +74,26 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void validateData() {
         // get data
+        fullName = binding.fullNameEt.getText().toString().trim();
         email = binding.emailEt.getText().toString().trim();
-        password = binding.passwordEt.getText().toString().trim();
+        phone = binding.phoneNumEt.getText().toString().trim();
+        password1 = binding.passwordEt.getText().toString().trim();
+        password2 = binding.passwordConfirmEt.getText().toString().trim();
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (TextUtils.isEmpty(fullName)) {
+            binding.fullNameEt.setError("Name cannot be empty.");
+        } else if (!fullName.contains(" ")) {
+            binding.fullNameEt.setError("Name must contain at least a first and last name.");
+        } else if (!Patterns.PHONE.matcher(phone).matches()) {
+            binding.phoneNumEt.setError("Invalid phone format");
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.emailEt.setError("Invalid email format");
-        } else if (TextUtils.isEmpty(password)) {
+        } else if (TextUtils.isEmpty(password1)) {
             binding.passwordEt.setError("Enter password");
-        } else if (password.length() < 6) {
+        } else if (password1.length() < 6) {
             binding.passwordEt.setError("Password must be greater than 5 characters.");
+        } else if (!password1.equals(password2)) {
+            binding.passwordConfirmEt.setError("Passwords must be equal to each other.");
         } else {
             firebaseSignUp();
         }
@@ -88,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
         // show progress
         progressDialog.show();
 
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password1)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
@@ -96,8 +111,10 @@ public class RegisterActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         // get user info
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                        User user = new User(email, phone, fullName);
+                        mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
                         String email = firebaseUser.getEmail();
-                        Toast.makeText(RegisterActivity.this, "Account created\n"+email, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Account created\n"+email+" "+firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
 
                         // open profile activity
                         startActivity(new Intent(RegisterActivity.this, ProfileActivity.class));
