@@ -114,7 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
                         User user = new User(email, phone, fullName);
                         mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
                         String email = firebaseUser.getEmail();
-                        Toast.makeText(RegisterActivity.this, "Account created\n"+email+" "+firebaseUser.getUid(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Account created\n"+email+" ", Toast.LENGTH_SHORT).show();
 
                         // open profile activity
                         startActivity(new Intent(RegisterActivity.this, ProfileActivity.class));

@@ -14,4 +14,9 @@
         <item>Doctorate</item>
         <item>Faculty/Staff</item>
     </string-array>
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Non-binary</item>
+    </string-array>
 </resources>
