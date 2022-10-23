@@ -62,6 +62,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        binding.forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LoginActivity.this, ForgotPasswordActivity.class));
+            }
+        });
+
         binding.loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +83,7 @@ public class LoginActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             // user is already logged in
-            startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
+            startActivity(new Intent(LoginActivity.this, SettingsActivity.class));
             finish();
         }
 
@@ -87,7 +94,10 @@ public class LoginActivity extends AppCompatActivity {
         email = binding.emailEt.getText().toString().trim();
         password = binding.passwordEt.getText().toString().trim();
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+        if (TextUtils.isEmpty(email)) {
+            binding.emailEt.setError("Email cannot be empty.");
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.emailEt.setError("Invalid email format");
         } else if (TextUtils.isEmpty(password)) {
             binding.passwordEt.setError("Enter password");

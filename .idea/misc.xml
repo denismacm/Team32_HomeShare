@@ -3,10 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.15625" />
+        <entry key="app/src/main/res/layout/activity_change_password.xml" value="0.2388888888888889" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.28428344726562504" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.20806427001953123" />
-        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_register.xml" value="0.15625" />
+        <entry key="app/src/main/res/layout/activity_profile.xml" value="0.2926376342773438" />
+        <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.30242309570312503" />
       </map>
     </option>
   </component>

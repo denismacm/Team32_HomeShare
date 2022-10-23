@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -22,7 +23,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.hfad.team32_homeshare.databinding.ActivityRegisterBinding;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -30,7 +35,6 @@ public class RegisterActivity extends AppCompatActivity {
     private ActivityRegisterBinding binding;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-    private DatabaseReference mDatabase;
 
     private ActionBar actionBar;
 
@@ -46,11 +50,9 @@ public class RegisterActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle("Register");
         actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
 
         // Initialize FireBase auth
         firebaseAuth = FirebaseAuth.getInstance();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         // configure progress dialog
         progressDialog = new ProgressDialog(this);
@@ -66,10 +68,20 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        onBackPressed(); // go to previous activity when back button of action bar is pressed
+//        return super.onSupportNavigateUp();
+//    }
+
     @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed(); // go to previous activity when back button of action bar is pressed
-        return super.onSupportNavigateUp();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void validateData() {
@@ -84,8 +96,12 @@ public class RegisterActivity extends AppCompatActivity {
             binding.fullNameEt.setError("Name cannot be empty.");
         } else if (!fullName.contains(" ")) {
             binding.fullNameEt.setError("Name must contain at least a first and last name.");
+        } else if (TextUtils.isEmpty(phone)) {
+            binding.phoneNumEt.setError("Phone cannot be empty.");
         } else if (!Patterns.PHONE.matcher(phone).matches()) {
             binding.phoneNumEt.setError("Invalid phone format");
+        } else if (TextUtils.isEmpty(email)) {
+            binding.emailEt.setError("Email cannot be empty.");
         } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             binding.emailEt.setError("Invalid email format");
         } else if (TextUtils.isEmpty(password1)) {
@@ -111,9 +127,15 @@ public class RegisterActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         // get user info
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                        User user = new User(email, phone, fullName);
-                        mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
-                        String email = firebaseUser.getEmail();
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("fullName", fullName);
+                        user.put("phone", phone);
+                        user.put("email", email);
+//                        User user = new User(email, phone, fullName);
+//                        mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
+                        db.collection("users").document(firebaseUser.getUid()).set(user);
+//                        String email = firebaseUser.getEmail();
                         Toast.makeText(RegisterActivity.this, "Account created\n"+email+" ", Toast.LENGTH_SHORT).show();
 
                         // open profile activity

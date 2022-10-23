@@ -1,86 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ProfileActivity"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:gravity="center">
-
-    <!--Full Name-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fullNameTil"
+    android:layout_height="match_parent">
+    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/fullNameEt"
+        android:layout_height="match_parent"
+        tools:context=".ProfileActivity"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/profilePic"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_marginBottom="10dp"
+            tools:srcCompat="@tools:sample/avatars"
+            android:background="@color/green"
+            />
+        <!--Full Name-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/fullNameTil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/fullNameEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Full Name"
+                android:inputType="textPersonName"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Full Name-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/emailTil"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Full Name"
-            android:inputType="textPersonName"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginTop="10dp">
+            <EditText
+                android:id="@+id/emailEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <!--Phone Num-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneNumTil"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        >
+        <!--Phone Num-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/phoneNumTil"
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            >
 
-        <EditText
-            android:id="@+id/phoneNumEt"
+            <EditText
+                android:id="@+id/phoneNumEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Phone Number"
+                android:inputType="phone"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Spinner
+            android:id="@+id/class_spinner"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="52dp" />
+
+        <Spinner
+            android:id="@+id/gender_spinner"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="52dp" />
+
+        <!--Biography-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/biographyTil"
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            >
+
+            <EditText
+                android:id="@+id/biographyEt"
+                android:layout_width="match_parent"
+                android:layout_height="105dp"
+                android:hint="Biography"
+                android:inputType="textMultiLine" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!--Login Button-->
+        <Button
+            android:id="@+id/submitBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:inputType="phone"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:text="Submit Changes"/>
+<!--        <Button-->
+<!--            android:id="@+id/logoutBtn"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Log Out"/>-->
 
-    <Spinner
-        android:id="@+id/class_spinner"
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="52dp" />
-
-    <Spinner
-        android:id="@+id/gender_spinner"
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="52dp" />
-
-    <!--Biography-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/biographyTil"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        >
-
-        <EditText
-            android:id="@+id/biographyEt"
-            android:layout_width="match_parent"
-            android:layout_height="105dp"
-            android:hint="Biography"
-            android:inputType="textLongMessage" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!--Login Button-->
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Submit Changes"/>
-    <Button
-        android:id="@+id/logoutBtn"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log Out"/>
-
-
-
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
