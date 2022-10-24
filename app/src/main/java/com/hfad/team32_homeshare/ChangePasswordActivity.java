@@ -33,6 +33,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         binding = ActivityChangePasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        checkUser();
+
         actionBar = getSupportActionBar();
         actionBar.setTitle("Change Password");
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -89,6 +91,17 @@ public class ChangePasswordActivity extends AppCompatActivity {
                     Toast.makeText(ChangePasswordActivity.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    private void checkUser() {
+        // check if user is already logged in, if so then open profile activity
+
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            // user is already logged in
+            startActivity(new Intent(ChangePasswordActivity.this, LoginActivity.class));
+            finish();
         }
     }
 }

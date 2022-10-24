@@ -63,7 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseStorage storage;
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
-    private boolean imageChange;
+//    private boolean imageChange;
 
     private String prevFullName;
     private String prevPhone;
@@ -80,9 +80,9 @@ public class ProfileActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle("Manage Your Profile");
 
-        prevClassStanding = null;
-        prevGender = null;
-        prevBiography = null;
+        prevClassStanding = "";
+        prevGender = "";
+        prevBiography = "";
 
         Spinner classSpinner = (Spinner) findViewById(R.id.class_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -104,7 +104,7 @@ public class ProfileActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         checkUser();
 
-        imageChange = false;
+//        imageChange = false;
         profilePic = binding.profilePic;
         progressDialog = new ProgressDialog(this);
 
@@ -152,7 +152,7 @@ public class ProfileActivity extends AppCompatActivity {
                         ref.update("email", email);
                         firebaseUser.updateEmail(email);
                     }
-                    if (!prevGender.equals(gender)) {
+                    if (!prevFullName.equals(fullName)) {
                         ref.update("fullName", fullName);
                     }
                     if (!prevPhone.equals(phone)) {
@@ -167,9 +167,9 @@ public class ProfileActivity extends AppCompatActivity {
                     if (!prevGender.equals(gender)) {
                         ref.update("gender", gender);
                     }
-                    if (imageChange) {
-                        uploadPicture();
-                    }
+//                    if (imageChange) {
+//                        uploadPicture();
+//                    }
                     Toast.makeText(ProfileActivity.this, "Submitted changes for " + email, Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(ProfileActivity.this, SettingsActivity.class));
 //                    finish();
@@ -249,7 +249,7 @@ public class ProfileActivity extends AppCompatActivity {
         if (requestCode==1 && resultCode==RESULT_OK && data != null && data.getData()!= null) {
             imageUri = data.getData();
             profilePic.setImageURI(imageUri);
-            imageChange = true;
+            uploadPicture();
         }
     }
 
@@ -267,7 +267,7 @@ public class ProfileActivity extends AppCompatActivity {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         progressDialog.dismiss();
                         Snackbar.make(findViewById(android.R.id.content), "Image uploaded", Snackbar.LENGTH_LONG).show();
-                        imageChange = false;
+//                        imageChange = false;
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
