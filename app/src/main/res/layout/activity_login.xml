@@ -67,6 +67,14 @@
         android:layout_below="@id/passwordTil"
         android:text="@string/login"/>
 
+    <ImageView
+        android:id="@+id/google"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/common_google_signin_btn_text_light_normal"
+        android:layout_below="@id/loginBtn"
+        />
+
     <TextView
         android:id="@+id/forgotPassword"
         android:layout_width="match_parent"

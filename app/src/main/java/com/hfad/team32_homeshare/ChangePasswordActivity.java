@@ -33,6 +33,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         binding = ActivityChangePasswordBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        firebaseAuth = FirebaseAuth.getInstance();
         checkUser();
 
         actionBar = getSupportActionBar();
@@ -42,8 +43,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait.");
         progressDialog.setTitle("Updating your password...");
-
-        firebaseAuth = FirebaseAuth.getInstance();
 
         binding.updatePasswordBtn.setOnClickListener(new View.OnClickListener() {
             @Override

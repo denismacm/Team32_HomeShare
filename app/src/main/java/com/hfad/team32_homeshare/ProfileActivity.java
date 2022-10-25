@@ -49,6 +49,8 @@ import com.hfad.team32_homeshare.databinding.ActivityProfileBinding;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -80,6 +82,8 @@ public class ProfileActivity extends AppCompatActivity {
         actionBar = getSupportActionBar();
         actionBar.setTitle("Manage Your Profile");
 
+        prevFullName = "";
+        prevPhone = "";
         prevClassStanding = "";
         prevGender = "";
         prevBiography = "";
@@ -194,35 +198,46 @@ public class ProfileActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
                                 DocumentSnapshot snapshot = task.getResult();
-                                prevFullName = snapshot.getData().get("fullName").toString();
-                                binding.fullNameEt.setText(prevFullName);
 
-                                prevPhone = snapshot.getData().get("phone").toString();
-                                binding.phoneNumEt.setText(prevPhone);
-
-                                binding.emailEt.setText(firebaseUser.getEmail());
-
-                                if (snapshot.getData().get("biography") != null) {
-                                    prevBiography = snapshot.getData().get("biography").toString();
-                                    binding.biographyEt.setText(prevBiography);
-                                }
-                                if (snapshot.getData().get("classStanding") != null) {
-                                    prevClassStanding = snapshot.getData().get("classStanding").toString();
-                                    binding.classSpinner.setSelection(getIndex(binding.classSpinner, prevClassStanding));
-                                }
-                                if (snapshot.getData().get("gender") != null) {
-                                    prevGender = snapshot.getData().get("gender").toString();
-                                    binding.genderSpinner.setSelection(getIndex(binding.genderSpinner, prevGender));
-                                }
-                                StorageReference pathReference = storageReference.child("images/" + firebaseUser.getUid());
-                                long MAX_BYTES = 1024*1024*10;
-                                pathReference.getBytes(MAX_BYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                    @Override
-                                    public void onSuccess(byte[] bytes) {
-                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                        profilePic.setImageBitmap(bitmap);
+                                if (snapshot.exists()) {
+                                    if (snapshot.getData().get("fullName") != null) {
+                                        prevFullName = snapshot.getData().get("fullName").toString();
+                                        binding.fullNameEt.setText(prevFullName);
                                     }
-                                });
+
+                                    if (snapshot.getData().get("phone") != null) {
+                                        prevPhone = snapshot.getData().get("phone").toString();
+                                        binding.phoneNumEt.setText(prevPhone);
+                                    }
+
+                                    binding.emailEt.setText(firebaseUser.getEmail());
+
+                                    if (snapshot.getData().get("biography") != null) {
+                                        prevBiography = snapshot.getData().get("biography").toString();
+                                        binding.biographyEt.setText(prevBiography);
+                                    }
+                                    if (snapshot.getData().get("classStanding") != null) {
+                                        prevClassStanding = snapshot.getData().get("classStanding").toString();
+                                        binding.classSpinner.setSelection(getIndex(binding.classSpinner, prevClassStanding));
+                                    }
+                                    if (snapshot.getData().get("gender") != null) {
+                                        prevGender = snapshot.getData().get("gender").toString();
+                                        binding.genderSpinner.setSelection(getIndex(binding.genderSpinner, prevGender));
+                                    }
+                                    StorageReference pathReference = storageReference.child("images/" + firebaseUser.getUid());
+                                    long MAX_BYTES = 1024 * 1024 * 10;
+                                    pathReference.getBytes(MAX_BYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                        @Override
+                                        public void onSuccess(byte[] bytes) {
+                                            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                            profilePic.setImageBitmap(bitmap);
+                                        }
+                                    });
+                                } else {
+                                    Map<String, Object> user = new HashMap<>();
+                                    db.collection("users").document(firebaseUser.getUid()).set(user);
+                                    binding.emailEt.setText(firebaseUser.getEmail());
+                                }
                             }
                         }
                     });

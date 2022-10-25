@@ -11,6 +11,11 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hfad.team32_homeshare.databinding.ActivitySettingsBinding;
@@ -20,6 +25,9 @@ public class SettingsActivity extends AppCompatActivity {
     private ActivitySettingsBinding binding;
     private ActionBar actionBar;
     private FirebaseAuth firebaseAuth;
+
+    private GoogleSignInClient gsc;
+    private GoogleSignInOptions gso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,13 @@ public class SettingsActivity extends AppCompatActivity {
         actionBar.setTitle("Settings");
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        gsc = GoogleSignIn.getClient(this, gso);
 
         binding.editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +67,9 @@ public class SettingsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 firebaseAuth.signOut();
+                gsc.signOut();
+
+
                 checkUser();
             }
         });
