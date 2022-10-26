@@ -106,11 +106,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+        progressDialog = new ProgressDialog(this);
         checkUser();
 
 //        imageChange = false;
         profilePic = binding.profilePic;
-        progressDialog = new ProgressDialog(this);
+
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
@@ -191,11 +192,14 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
             finish();
         } else {
+            progressDialog.setTitle("Fetching profile...");
+            progressDialog.show();
             db.collection("users").document(firebaseUser.getUid())
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            progressDialog.dismiss();
                             if (task.isSuccessful()) {
                                 DocumentSnapshot snapshot = task.getResult();
 
