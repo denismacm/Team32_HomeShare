@@ -9,4 +9,7 @@
     <string name="invitations_icon">📩</string>
     <string name="response">📥</string>
     <string name="settings_icon">⚙</string>
+    <string name="add">ADD</string>
+    <string name="name">Person Name</string>
+    <string name="email">Email</string>
 </resources>
