@@ -8,4 +8,12 @@ public class Invitation {
     public int numSpotsLeft;
 
     public Invitation() {}
+
+    public String getInvitationID() {
+        return invitationID;
+    }
+
+    public String getDate() {
+        return invitationID;
+    }
 }
