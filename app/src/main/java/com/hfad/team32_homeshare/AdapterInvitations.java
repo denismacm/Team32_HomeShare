@@ -24,7 +24,8 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
     @NonNull
     @Override
-    public MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public AdapterInvitations.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        Context context = viewGroup.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.activity_cards, viewGroup);
 
         return new MyHolder(view);
@@ -32,9 +33,8 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int i) {
-        String userName = invitationList.get(i).invitationID;
-        String userEmail = invitationList.get(i).date;
-
+        String userName = invitationList.get(i).getInvitationID();
+        String userEmail = invitationList.get(i).getDate();
         holder.nameTv.setText(userName);
         holder.emailTv.setText(userEmail);
 
@@ -52,7 +52,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         return invitationList.size();
     }
 
-    class MyHolder extends RecyclerView.ViewHolder {
+    static class MyHolder extends RecyclerView.ViewHolder {
 //        ImageView
         TextView nameTv, emailTv;
         public MyHolder(@NonNull View itemView) {

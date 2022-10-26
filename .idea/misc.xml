@@ -14,6 +14,11 @@
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.30242309570312503" />
         <entry key="app/src/main/res/layout/fragment_invitations.xml" value="0.1125" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_responses.xml" value="0.2255" />
+        <entry key="app/src/main/res/drawable/selector.xml" value="0.2245" />
+        <entry key="app/src/main/res/layout/activity_responses.xml" value="0.18978118896484386" />
+        <entry key="app/src/main/res/menu/manu_nav.xml" value="0.2328125" />
+        <entry key="app/src/main/res/menu/menu_nav.xml" value="0.8467056274414062" />
       </map>
     </option>
   </component>
