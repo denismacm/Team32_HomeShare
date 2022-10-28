@@ -10,14 +10,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.MyHolder> {
 
     Context context;
-    List<Invitation> invitationList;
+    ArrayList<Invitation> invitationList;
 
-    public AdapterInvitations(Context context, List<Invitation> invitationList) {
+    public AdapterInvitations(Context context, ArrayList<Invitation> invitationList) {
         this.context = context;
         this.invitationList = invitationList;
     }
@@ -25,8 +26,8 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
     @NonNull
     @Override
     public AdapterInvitations.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        Context context = viewGroup.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_cards, viewGroup);
+//        Context context = viewGroup.getContext();
+        View view = LayoutInflater.from(context).inflate(R.layout.activity_cards, viewGroup, false);
 
         return new MyHolder(view);
     }
@@ -38,10 +39,14 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         holder.nameTv.setText(userName);
         holder.emailTv.setText(userEmail);
 
+//        Invitation invite = invitationList.get(i);
+//        holder.setDetails(invite);
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, ""+userEmail, Toast.LENGTH_SHORT).show();
+                //  IMPLEMENT OVERLAY
+                Toast.makeText(context, ""+ userEmail, Toast.LENGTH_SHORT).show(); // to show that clicking works
             }
         });
 
@@ -52,7 +57,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         return invitationList.size();
     }
 
-    static class MyHolder extends RecyclerView.ViewHolder {
+    class MyHolder extends RecyclerView.ViewHolder {
 //        ImageView
         TextView nameTv, emailTv;
         public MyHolder(@NonNull View itemView) {
@@ -61,5 +66,10 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             nameTv = itemView.findViewById(R.id.name);
             emailTv = itemView.findViewById(R.id.email);
         }
+
+//        void setDetails(Invitation inv) {
+//            nameTv.setText(inv.getInvitationID());
+//            emailTv.setText(inv.getDate());
+//        }
     }
 }

@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_200"
-    tools:context=".InvitationsFragment">
+    tools:context=".SettingsFragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/invite_1"
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="55dp">
+        android:layout_height="match_parent"
+        android:text="Settings Fragment" />
 
-    </androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>
