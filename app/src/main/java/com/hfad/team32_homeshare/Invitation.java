@@ -9,11 +9,16 @@ public class Invitation {
 
     public Invitation() {}
 
+    public Invitation(String invitationID, String date) {
+        this.invitationID = invitationID;
+        this.date = date;
+    }
+
     public String getInvitationID() {
         return invitationID;
     }
 
     public String getDate() {
-        return invitationID;
+        return date;
     }
 }

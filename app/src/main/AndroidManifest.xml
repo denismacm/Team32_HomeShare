@@ -16,6 +16,7 @@
         android:theme="@style/Theme.Team32_HomeShare"
         tools:targetApi="31">
         <activity
+            android:name=".MainActivity"
             android:name=".ChangePasswordActivity"
             android:exported="false">
                 <meta-data
