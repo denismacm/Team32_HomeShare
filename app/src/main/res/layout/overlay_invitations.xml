@@ -6,102 +6,24 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/fullNameTil"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="150dp">
-
-        <EditText
-            android:id="@+id/fullNameEt"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="12dp">
+        <TextView
+            android:id="@+id/name1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/full_name"
-            android:inputType="textPersonName"
-            android:autofillHints="fullname"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!--Phone Num-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/phoneNumTil"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/fullNameTil"
-        >
-
-        <EditText
-            android:id="@+id/phoneNumEt"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/email1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/phone_number"
-            android:inputType="phone"
-            android:autofillHints="1234567890"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
 
-    <!--Email-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/emailTil"
-        android:layout_width="match_parent"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/phoneNumTil">
-
-        <EditText
-            android:id="@+id/emailEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:autofillHints="hello@hello.com"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!--Password-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordTil"
-        android:layout_width="match_parent"
-        android:layout_below="@id/emailTil"
-        android:layout_marginTop="10dp"
-        android:layout_centerInParent="true"
-        app:passwordToggleEnabled="true"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/passwordEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:autofillHints="password"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!--Password Confirmation-->
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/passwordConfirmTil"
-        android:layout_width="match_parent"
-        android:layout_below="@id/passwordTil"
-        android:layout_marginTop="10dp"
-        android:layout_centerInParent="true"
-        app:passwordToggleEnabled="true"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/passwordConfirmEt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/repeat_password"
-            android:inputType="textPassword"
-            android:autofillHints="password"/>
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <!--Login Button-->
-    <Button
-        android:id="@+id/registerBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/passwordConfirmTil"
-        android:text="@string/sign_up"/>
 
 </RelativeLayout>

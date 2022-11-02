@@ -16,19 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.MyHolder> {
+public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHolder> {
 
     Context context;
-    ArrayList<Invitation> invitationList;
+    ArrayList<Response> responseList;
 
-    public AdapterInvitations(Context context, ArrayList<Invitation> invitationList) {
+    public AdapterResponses(Context context, ArrayList<Response> responseList) {
         this.context = context;
-        this.invitationList = invitationList;
+        this.responseList = responseList;
     }
 
     @NonNull
     @Override
-    public AdapterInvitations.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public AdapterResponses.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 //        Context context = viewGroup.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.activity_cards, viewGroup, false);
 
@@ -37,12 +37,12 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int i) {
-        String userName = invitationList.get(i).getInvitationID();
-        String userEmail = invitationList.get(i).getDate();
+        String userName = responseList.get(i).getResponsesID();
+        String userEmail = responseList.get(i).getUserName();
         holder.nameTv.setText(userName);
         holder.emailTv.setText(userEmail);
 
-//        Invitation invite = invitationList.get(i);
+//        Response invite = responseList.get(i);
 //        holder.setDetails(invite);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +50,6 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             public void onClick(View view) {
                 //  IMPLEMENT OVERLAY
 //                Toast.makeText(context, ""+ userEmail, Toast.LENGTH_SHORT).show(); // to show that clicking works
-                // inflate the layout of the popup window
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popupView = inflater.inflate(R.layout.overlay_invitations, null);
 
@@ -79,11 +78,11 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
     @Override
     public int getItemCount() {
-        return invitationList.size();
+        return responseList.size();
     }
 
     class MyHolder extends RecyclerView.ViewHolder {
-//        ImageView
+        //        ImageView
         TextView nameTv, emailTv;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -92,8 +91,8 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             emailTv = itemView.findViewById(R.id.email);
         }
 
-//        void setDetails(Invitation inv) {
-//            nameTv.setText(inv.getInvitationID());
+//        void setDetails(Response inv) {
+//            nameTv.setText(inv.getResponseID());
 //            emailTv.setText(inv.getDate());
 //        }
     }

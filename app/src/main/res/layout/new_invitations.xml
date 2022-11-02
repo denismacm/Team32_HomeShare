@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#FFFFFF">
+
+    <!--Home Type-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/homeTypeTil"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="150dp">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/home"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Home Type"-->
+<!--            android:inputType="text"/>-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--    &lt;!&ndash;Description&ndash;&gt;-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/descriptionTil"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/homeTypeTil">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/descriptionEt"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="@string/description"-->
+<!--            android:inputType="textMultiLine|textCapSentences|textAutoCorrect"/>-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--    &lt;!&ndash;Day&ndash;&gt;-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/dayTil"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_below="@id/descriptionTil"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        app:passwordToggleEnabled="true"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/dateEt"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="04"-->
+<!--            android:inputType="date"/>-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+
+<!--    &lt;!&ndash;Requirement&ndash;&gt;-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/requirementTil"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_below="@id/dayTil"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        app:passwordToggleEnabled="true"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/requirementEt"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Your expectation for roommate"-->
+<!--            android:inputType="textMultiLine|textCapSentences|textAutoCorrect"/>-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--    &lt;!&ndash;Login Button&ndash;&gt;-->
+<!--    <Button-->
+<!--        android:id="@+id/registerBtn"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@id/passwordConfirmTil"-->
+<!--        android:text="@string/sign_up"/>-->
+
+</RelativeLayout>
