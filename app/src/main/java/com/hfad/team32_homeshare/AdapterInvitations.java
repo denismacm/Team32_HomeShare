@@ -59,11 +59,11 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 int height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
+                ((TextView)popupWindow.getContentView().findViewById(R.id.name1)).setText(userName);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.email1)).setText(userEmail);
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
                 // dismiss the popup window when touched
 //                popupView.setOnTouchListener(new View.OnTouchListener() {
 //                    @Override
