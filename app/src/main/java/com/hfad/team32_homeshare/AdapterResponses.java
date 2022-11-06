@@ -58,8 +58,8 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                 int height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.name1)).setText(userName);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.email1)).setText(userEmail);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(userName);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(userEmail);
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -88,7 +88,7 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
             super(itemView);
 
             nameTv = itemView.findViewById(R.id.name);
-            emailTv = itemView.findViewById(R.id.email);
+            emailTv = itemView.findViewById(R.id.location);
         }
 
 //        void setDetails(Response inv) {

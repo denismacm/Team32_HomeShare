@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.MyHolder> {
 
@@ -37,10 +38,29 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int i) {
-        String userName = invitationList.get(i).getInvitationID();
-        String userEmail = invitationList.get(i).getDate();
-        holder.nameTv.setText(userName);
-        holder.emailTv.setText(userEmail);
+        Invitation inv = invitationList.get(i);
+        String fullName = inv.fullName;
+        String datePosted = inv.date;
+
+        Map<String, Object> home = inv.home;
+        String location = home.get("location").toString();
+        String bbQuantity = home.get("bbQuantity").toString();
+        String deadline = "Deadline: " + home.get("deadline").toString();
+        String homeType = "Home Type: " + home.get("homeType").toString();
+        Boolean userPriceRange = (Boolean) home.get("userPriceRange");
+//        String price;
+//        if (userPriceRange) {
+//            price = "Min Price: " + home.get("minPrice");
+//            price += "Max Price: " + home.get("maxPrice");
+//        } else {
+//            price = "Price: " + home.get("onePrice");
+//        }
+        String numRoommatesCapacity = "Looking for " + String.valueOf(inv.numRoommatesCapacity) + " roommates";
+        String numSpotsLeft = String.valueOf(inv.numSpotsLeft) + " spots left";
+
+        holder.nameTv.setText(fullName);
+        holder.locationTv.setText(location);
+        holder.datePostedTv.setText("Date posted: " + datePosted);
 
 //        Invitation invite = invitationList.get(i);
 //        holder.setDetails(invite);
@@ -59,8 +79,23 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 int height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.name1)).setText(userName);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.email1)).setText(userEmail);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(fullName);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(location);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(datePosted);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.bbQuantityOL)).setText(bbQuantity);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.deadlineOL)).setText(deadline);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.homeTypeOL)).setText(homeType);
+                String price = "";
+                if (userPriceRange) {
+                    price = "Min Price: " + home.get("minPrice");
+                    price += "Max Price: " + home.get("maxPrice");
+                } else {
+                    price = "Price: " + home.get("onePrice");
+                }
+                ((TextView)popupWindow.getContentView().findViewById(R.id.priceOL)).setText(price);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.numCapacityOL)).setText(numRoommatesCapacity);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.numSpotsOL)).setText(numSpotsLeft);
+
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -84,12 +119,14 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
     class MyHolder extends RecyclerView.ViewHolder {
 //        ImageView
-        TextView nameTv, emailTv;
+        TextView nameTv, locationTv, datePostedTv;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             nameTv = itemView.findViewById(R.id.name);
-            emailTv = itemView.findViewById(R.id.email);
+            locationTv = itemView.findViewById(R.id.location);
+            datePostedTv = itemView.findViewById(R.id.datePosted);
+
         }
 
 //        void setDetails(Invitation inv) {

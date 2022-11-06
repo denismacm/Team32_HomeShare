@@ -6,10 +6,41 @@
     android:background="#D3D3D3"
     tools:context=".SettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Settings Fragment" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/address_input"
+        android:hint="Enter address"
+        android:padding="16dp"
+        android:drawablePadding="16dp"
+        android:drawableLeft="@drawable/ic_location"
+        android:gravity="center_vertical"
+        android:background="@android:drawable/editbox_background"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_view1"
+        android:textColor="@color/green"
+        android:fontFamily="monospace"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:layout_marginTop="60dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_view2"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:padding="12dp"
+        android:layout_marginTop="120dp"/>
+
 
 </FrameLayout>
