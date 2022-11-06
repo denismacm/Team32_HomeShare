@@ -9,11 +9,20 @@
 
     <EditText
         android:id="@+id/searchInvite"
-        android:layout_width="360dp"
+        android:layout_width="290dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
+        android:singleLine="true"
         android:drawableStart="@android:drawable/ic_menu_search"
         android:hint="Search for Responses" />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:id="@+id/submitBtn"
+        android:background="@drawable/ic_baseline_search_24"
+        android:layout_marginRight="60dp"/>
 
     <Spinner
         android:id="@+id/invitesFilter"
