@@ -37,8 +37,8 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int i) {
-        String userName = invitationList.get(i).getInvitationID();
-        String userEmail = invitationList.get(i).getDate();
+        String userName = invitationList.get(i).fullName;
+        String userEmail = invitationList.get(i).home.get("location").toString();
         holder.nameTv.setText(userName);
         holder.emailTv.setText(userEmail);
 

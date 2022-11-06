@@ -18,11 +18,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class InvitationsFragment extends Fragment {
@@ -61,16 +64,42 @@ public class InvitationsFragment extends Fragment {
         db.collection("invitations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                textView.setText("?");
+
                 if (task.isSuccessful()) {
+
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Map<String, Object> map = document.getData();
-                        Invitation inv = new Invitation(map.get("ownerID").toString(), map.get("date").toString());
-                        invitationsList.add(inv);
+//                        Map<String, Object> map = document.getData();
+//                        textView.setText(document.get("date").toString());
+//                        DocumentReference ref = document.getDocumentReference("owner");
+//                        DocumentSnapshot doc = ref.get().getResult();
+                        String ownerID = document.get("ownerID").toString();
+                        db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot doc = task.getResult();
+                                    String fullName = doc.get("fullName").toString();
+                                    Invitation inv = new Invitation();
+                                    inv.fullName = fullName;
+                                    inv.date = document.get("date").toString();
+                                    inv.home = (Map<String, Object>) document.get("home");
+                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                    invitationsList.add(inv);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+
+
                     }
+
                 }
             }
         });
+
+
+
 
 //        Invitation inv1 = new Invitation("Invitation 1", "Denis Mac");
 //        invitationsList.add(inv1);
@@ -87,6 +116,5 @@ public class InvitationsFragment extends Fragment {
 //        Invitation inv7 = new Invitation("Invitation 7", "Teresa Tran");
 //        invitationsList.add(inv7);
 
-        adapter.notifyDataSetChanged();
     }
 }
