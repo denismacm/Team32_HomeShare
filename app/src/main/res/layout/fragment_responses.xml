@@ -5,12 +5,27 @@
     android:layout_height="match_parent"
     android:background="#D3D3D3"
     tools:context=".InvitationsFragment">
+    <EditText
+        android:id="@+id/searchResponse"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:hint="Search for Responses" />
+
+    <Spinner
+        android:id="@+id/responsesFilter"
+        android:layout_width="55dp"
+        android:layout_gravity="right"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/invite_1"
+        android:id="@+id/response_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="55dp">
+        android:layout_marginTop="50dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>
