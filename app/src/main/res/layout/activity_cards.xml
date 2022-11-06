@@ -8,23 +8,35 @@
     app:cardCornerRadius="12dp"
     android:layout_margin="10dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp">
+
         <TextView
             android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:textSize= "18sp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/respondTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="250dp"
+            android:text="Respond To"
+            android:textSize="12sp"
+            android:gravity="start|center_vertical"/>
+
         <TextView
             android:id="@+id/email"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:textSize= "18sp"
-            android:textColor="@color/black" />
-    </LinearLayout>
+            android:layout_marginTop="25dp"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
