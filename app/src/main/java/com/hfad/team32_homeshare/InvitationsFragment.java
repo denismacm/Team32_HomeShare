@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +82,14 @@ public class InvitationsFragment extends Fragment {
         // Spinner which binds data to spinner
         spin.setAdapter(ad);
 
+        Button btn = (Button) view.findViewById(R.id.submitBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         return view;
     }
 
@@ -95,7 +104,7 @@ public class InvitationsFragment extends Fragment {
     }
 
     private void CreateDataForCards(View view) {
-        TextView textView = view.findViewById(R.id.randomText);
+//        TextView textView = view.findViewById(R.id.randomText);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("invitations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
