@@ -45,7 +45,7 @@ public class InvitationsFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 String text = adapterView.getItemAtPosition(position).toString();
-                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
             }
 
             @Override
