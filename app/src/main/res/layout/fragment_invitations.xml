@@ -6,6 +6,11 @@
     android:background="#D3D3D3"
     tools:context=".InvitationsFragment">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/randomText"
+        />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/invite_1"
         android:layout_width="match_parent"
