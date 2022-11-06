@@ -37,8 +37,10 @@ public class InvitationsFragment extends Fragment {
     private AdapterInvitations adapter;
     private ArrayList<Invitation> invitationsList;
     private Spinner spin;
+    private Spinner spinTwo;
     private String[] items = new String[]{"Name", "Gender", "Distance",
             "Number of Bedrooms","Number of Bathrooms", "Price", "Maximum Number of Roommates"};
+    private String[] order = new String[]{"Ascending", "Descending"};
 
     public InvitationsFragment() {
         // Required empty public constructor
@@ -56,7 +58,21 @@ public class InvitationsFragment extends Fragment {
         // apply OnItemSelectedListener on it which
         // tells which item of spinner is clicked
         spin = (Spinner) view.findViewById(R.id.invitesFilter);
+        spinTwo = (Spinner) view.findViewById(R.id.invitesOrder);
         spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                String text = adapterView.getItemAtPosition(position).toString();
+//                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        spinTwo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 String text = adapterView.getItemAtPosition(position).toString();
@@ -73,14 +89,18 @@ public class InvitationsFragment extends Fragment {
         // having the list of courses
         ArrayAdapter ad
                 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, items);//use getActivity();
+        ArrayAdapter adTwo
+                = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, order);
 
         // set simple layout resource file
         // for each item of spinner
         ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adTwo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // Set the ArrayAdapter (ad) data on the
         // Spinner which binds data to spinner
         spin.setAdapter(ad);
+        spinTwo.setAdapter(adTwo);
 
         Button btn = (Button) view.findViewById(R.id.submitBtn);
         btn.setOnClickListener(new View.OnClickListener() {

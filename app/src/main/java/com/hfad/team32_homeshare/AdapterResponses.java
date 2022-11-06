@@ -30,7 +30,7 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
     @Override
     public AdapterResponses.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 //        Context context = viewGroup.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_cards, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.responses_cards, viewGroup, false);
 
         return new MyHolder(view);
     }

@@ -26,10 +26,19 @@
     <Spinner
         android:id="@+id/invitesFilter"
         android:layout_width="55dp"
-        android:layout_gravity="right"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:layout_marginLeft = "303dp"/>
+
+    <Spinner
+        android:id="@+id/invitesOrder"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/invite_1"
