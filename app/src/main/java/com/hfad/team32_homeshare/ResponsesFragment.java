@@ -132,6 +132,8 @@ public class ResponsesFragment extends Fragment {
                                      String invitationID = doc.get("invitationID").toString();
                                      String message = doc.get("message").toString();
                                      String datePosted = doc.get("date").toString();
+                                     String responseID = doc.getId();
+                                     String recipientID = doc.get("recipientID").toString();
                                      db.collection("invitations").document(invitationID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                          @Override
                                          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -152,6 +154,10 @@ public class ResponsesFragment extends Fragment {
                                                              r.senderName = senderName;
                                                              r.address = location;
                                                              r.senderGender = senderGender;
+                                                             r.senderID = senderID;
+                                                             r.recipientID = recipientID;
+                                                             r.responseID = responseID;
+                                                             r.invID = invitationID;
                                                              responsesList.add(r);
                                                              adapter.notifyDataSetChanged();
                                                          }

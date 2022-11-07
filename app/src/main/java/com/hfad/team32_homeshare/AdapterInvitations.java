@@ -6,17 +6,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.UUID;
 
 public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.MyHolder> {
 
@@ -33,7 +47,6 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
     public AdapterInvitations.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 //        Context context = viewGroup.getContext();
         View view = LayoutInflater.from(context).inflate(R.layout.activity_cards, viewGroup, false);
-
         return new MyHolder(view);
     }
 
@@ -42,6 +55,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         Invitation inv = invitationList.get(i);
         String fullName = inv.fullName;
         String datePosted = inv.date;
+        String hiddenID = UUID.randomUUID().toString();
         String expectation = inv.expectation;
 
         Map<String, Object> home = inv.home;
@@ -117,7 +131,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             @Override
             public void onClick(View view) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View popupView = inflater.inflate(R.layout.respond_to_layout, null);
+                View popupView = inflater.inflate(R.layout.create_invite_layout, null);
                 // create the popup window
                 int width = LinearLayout.LayoutParams.WRAP_CONTENT;
                 int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -125,20 +139,71 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 boolean focusable = true;
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                popupView.findViewById(R.id.submitInvite).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                        String senderID = firebaseAuth.getCurrentUser().getUid();
+//
+                        final EditText edit =  (EditText) popupView.findViewById(R.id.inviteEt);
+                        String getRecipientID = inv.ownerID;
+                        String getInvID = inv.invitationID;
+                        String getMessage = edit.getText().toString();
+                        String currentDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+                        String responseID = UUID.randomUUID().toString();
+
+                        //create response
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("users").document(getRecipientID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                    ArrayList<String> responsesIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
+                                    responsesIDArray.add(responseID);
+                                    db.collection("users").document(getRecipientID).update("responsesList", responsesIDArray);
+
+                                    Map<String, String> responseMap = new HashMap<>();
+                                    responseMap.put("date", currentDate);
+                                    responseMap.put("invitationID", getInvID);
+                                    responseMap.put("message", getMessage);
+                                    responseMap.put("recipientID", getRecipientID);
+                                    responseMap.put("senderID", senderID);
+
+                                    db.collection("responses").document(responseID).set(responseMap);
+                                    popupWindow.dismiss();
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
 
-//        holder.noButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//            }
-//        });
+        holder.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                String senderID = firebaseAuth.getCurrentUser().getUid();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-//       holder.sendButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//            }
-//       });
+                db.collection("users").document(senderID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            ArrayList<String> hiddenInvitesIDArray = (ArrayList<String>) documentSnapshot.get("declinedInvitationsList");
+                            hiddenInvitesIDArray.add(hiddenID);
+                            db.collection("users").document(senderID).update("declinedInvitationsList", hiddenInvitesIDArray);
+                            //remove invitation
+
+                        }
+                    }
+                });
+
+
+            }
+        });
 
     }
 
