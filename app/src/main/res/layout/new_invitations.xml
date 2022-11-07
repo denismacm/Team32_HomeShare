@@ -19,63 +19,99 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp" />
-
+        <TextView
+            android:id="@+id/homeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/home_type"
+            android:textColor="@color/black"
+            android:layout_below="@id/name"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"/>
         <Spinner
             android:id="@+id/homeTypeSpinner"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_below="@id/name"
+            android:layout_below="@id/homeTitle"
             android:spinnerMode="dialog" />
 
-        <!--Description-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/descriptionTil"
+        <TextView
+            android:id="@+id/bedTitle"
             android:layout_width="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/homeTypeSpinner">
+            android:layout_below="@id/homeTypeSpinner"
+            android:text="@string/bed_num"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+        <Spinner
+            android:id="@+id/bedSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/bedTitle"
+            android:spinnerMode="dialog" />
+        <TextView
+            android:id="@+id/bathTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bed_num"
+            android:textColor="@color/black"
+            android:layout_below="@id/bedSpinner"
+            android:textSize="18dp" />
+        <Spinner
+            android:id="@+id/bathSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/bathTitle"
+            android:spinnerMode="dialog" />
+        <!--Description-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/descriptionTil"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/homeTypeSpinner">-->
 
-            <EditText
-                android:id="@+id/bed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/bed_num"
-                android:autofillHints="0"
-                android:inputType="number"/>
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/bed"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="@string/bed_num"-->
+<!--                android:autofillHints="0"-->
+<!--                android:inputType="number"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <!--Day-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/bathTil"
-            android:layout_width="match_parent"
-            android:layout_below="@id/descriptionTil"
-            android:layout_marginTop="10dp"
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/bathTil"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_below="@id/descriptionTil"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_height="wrap_content">-->
 
-            <EditText
-                android:id="@+id/bath"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autofillHints="0"
-                android:hint="@string/bath_num"
-                android:inputType="number"/>
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <EditText-->
+<!--                android:id="@+id/bath"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:autofillHints="0"-->
+<!--                android:hint="@string/bath_num"-->
+<!--                android:inputType="number"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
         <LinearLayout
             android:id="@+id/deadline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_below="@id/bathTil">
+            android:layout_below="@id/bathSpinner">
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/deadlineTitle"
-                android:textAlignment="center"
-                android:textSize="18dp"
-                android:textColor="@color/black" />
+                android:text="@string/deadline"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

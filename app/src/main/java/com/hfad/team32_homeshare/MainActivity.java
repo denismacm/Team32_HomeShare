@@ -43,10 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private Spinner spin;
+    private Spinner bedSpin;
+    private Spinner bathSpin;
     private Spinner daySpin;
     private Spinner monthSpin;
     private Spinner yearSpin;
     private String[] homeType = new String[]{"Apartment", "Condo", "Studio", "Townhouse"};
+    private String[] bedBath = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"};
     private String[] days = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
     private String[] months= new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
     private String[] years = new String[]{"2022", "2023", "2024", "2025", "2026"};
@@ -74,10 +77,36 @@ public class MainActivity extends AppCompatActivity {
 
                 //
                 spin = popupView.findViewById(R.id.homeTypeSpinner);
+                bedSpin = popupView.findViewById(R.id.bedSpinner);
+                bathSpin = popupView.findViewById(R.id.bathSpinner);
                 daySpin = popupView.findViewById(R.id.daySpinner);
                 monthSpin = popupView.findViewById(R.id.monthSpinner);
                 yearSpin = popupView.findViewById(R.id.yearSpinner);
                 spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+//                String text = adapterView.getItemAtPosition(position).toString();
+//                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+                    }
+                    //
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+                bedSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+//                String text = adapterView.getItemAtPosition(position).toString();
+//                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+                    }
+                    //
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+                bathSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 //                String text = adapterView.getItemAtPosition(position).toString();
@@ -127,6 +156,10 @@ public class MainActivity extends AppCompatActivity {
                 });
                 ArrayAdapter ad
                         = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, homeType);
+                ArrayAdapter bedAd
+                        = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, bedBath);
+                ArrayAdapter bathAd
+                        = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, bedBath);
                 ArrayAdapter dayAd
                         = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, days);
                 ArrayAdapter monthAd
@@ -134,10 +167,14 @@ public class MainActivity extends AppCompatActivity {
                 ArrayAdapter yearAd
                         = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, years);
                 ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                bedAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                bathAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 dayAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 monthAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 yearAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spin.setAdapter(ad);
+                bedSpin.setAdapter(bedAd);
+                bathSpin.setAdapter(bathAd);
                 daySpin.setAdapter(dayAd);
                 monthSpin.setAdapter(monthAd);
                 yearSpin.setAdapter(yearAd);
