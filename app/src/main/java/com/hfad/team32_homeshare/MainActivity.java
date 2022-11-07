@@ -31,6 +31,8 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.hfad.team32_homeshare.databinding.ActivityMainBinding;
 
 import java.util.Arrays;
@@ -43,26 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private Spinner spin;
     private String[] homeType = new String[]{"Apartment", "Condo", "Studio", "Townhouse"};
     private EditText editText;
+    private FirebaseAuth firebaseAuth;
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-            assert data != null;
-            Place place = Autocomplete.getPlaceFromIntent(data);
-            editText.setText(place.getName());
-//            textView1.setText(String.format("Locality Name: %s", place.getName()));
-//            textView2.setText(String.valueOf(place.getLatLng()));
-            float[] res = new float[3];
-            Location.distanceBetween(Objects.requireNonNull(place.getLatLng()).latitude, place.getLatLng().longitude, 34.022415, -118.285530, res);
-//            textView2.setText(String.valueOf((float) res[0]/1690) + " miles from campus");
-        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
-            assert data != null;
-            Status status = Autocomplete.getStatusFromIntent(data);
-            Toast.makeText(MainActivity.this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -70,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+//        firebaseAuth = FirebaseAuth.getInstance();
+//        checkUser();
+
         replaceFragment(new InvitationsFragment());
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -168,5 +156,36 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            assert data != null;
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            editText.setText(place.getName());
+//            textView1.setText(String.format("Locality Name: %s", place.getName()));
+//            textView2.setText(String.valueOf(place.getLatLng()));
+            float[] res = new float[3];
+            Location.distanceBetween(Objects.requireNonNull(place.getLatLng()).latitude, place.getLatLng().longitude, 34.022415, -118.285530, res);
+//            textView2.setText(String.valueOf((float) res[0]/1690) + " miles from campus");
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+            assert data != null;
+            Status status = Autocomplete.getStatusFromIntent(data);
+            Toast.makeText(MainActivity.this, status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void checkUser() {
+        // check if user is already logged in, if so then open profile activity
+
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        if (firebaseUser == null) {
+            // user is already logged in
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
     }
 }

@@ -41,4 +41,16 @@
         <item>Female</item>
         <item>Non-binary</item>
     </string-array>
+    <string name="home_type">Home Type</string>
+    <string name="descrip">Your expectation for roommate</string>
+    <string name="post">Post New Invitation</string>
+    <string name="address">Enter address</string>
+    <string name="max_price">Max Price</string>
+    <string name="min_price">Min Price</string>
+    <string name="price">Price</string>
+    <string name="set_range_for_price">Set range for price</string>
+    <string name="deadline">Deadline (MM/DD/YY)</string>
+    <string name="bath_num">Bathroom Number</string>
+    <string name="bed_num">Bedroom Number</string>
+    <string name="submit">Submit</string>
 </resources>

@@ -69,7 +69,6 @@ public class SettingsActivity extends AppCompatActivity {
                 firebaseAuth.signOut();
                 gsc.signOut();
 
-
                 checkUser();
             }
         });

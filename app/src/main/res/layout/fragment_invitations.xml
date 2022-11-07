@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,34 +8,49 @@
 
     <EditText
         android:id="@+id/searchInvite"
-        android:layout_width="290dp"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:singleLine="true"
         android:drawableStart="@android:drawable/ic_menu_search"
-        android:hint="Search for Responses" />
+        android:hint="Filter invitations by..." />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:id="@+id/submitBtn"
+        android:id="@+id/searchBtn"
         android:background="@drawable/ic_baseline_search_24"
-        android:layout_marginRight="60dp"/>
+        android:layout_marginRight="115dp"/>
 
     <Spinner
         android:id="@+id/invitesFilter"
         android:layout_width="55dp"
-        android:layout_gravity="right"
         android:layout_height="wrap_content"
         android:background="@android:drawable/btn_dropdown"
+        android:spinnerMode="dropdown"
+        android:layout_marginLeft = "303dp"/>
+
+    <Spinner
+        android:id="@+id/invitesOrder"
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@android:drawable/btn_dropdown"
         android:spinnerMode="dropdown" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:id="@+id/randomText"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/invite_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="60dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>

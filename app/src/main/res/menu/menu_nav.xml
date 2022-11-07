@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/nav_invitation"
-        android:title = "@string/invitations"
+        android:title = "Invitations"
         android:icon="@drawable/ic_invitation"/>
     <item android:id="@+id/nav_responses"
         android:title = "@string/responses"
         android:icon="@drawable/ic_responses"/>
     <item android:id="@+id/nav_settings"
-        android:title = "@string/settings"
+        android:title = "Settings"
         android:icon="@drawable/ic_settings"/>
 </menu>
