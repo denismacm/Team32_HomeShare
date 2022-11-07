@@ -115,13 +115,14 @@ public class ResponsesFragment extends Fragment {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String uid = firebaseAuth.getCurrentUser().getUid();
-//        TextView tv = view.findViewById(R.id.rando);
+        TextView tv = view.findViewById(R.id.rando);
         db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
              @Override
              public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                  if (task.isSuccessful()) {
                      DocumentSnapshot documentSnapshot = task.getResult();
                      ArrayList<String> respon = (ArrayList<String>) documentSnapshot.get("responsesList");
+
                      for (String res : respon) {
                          db.collection("responses").document(res).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                              @Override
@@ -134,6 +135,7 @@ public class ResponsesFragment extends Fragment {
                                      String datePosted = doc.get("date").toString();
                                      String responseID = doc.getId();
                                      String recipientID = doc.get("recipientID").toString();
+                                     Boolean accepted = (Boolean) doc.get("accepted");
                                      db.collection("invitations").document(invitationID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                          @Override
                                          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -152,12 +154,14 @@ public class ResponsesFragment extends Fragment {
                                                              r.date = datePosted;
                                                              r.message = message;
                                                              r.senderName = senderName;
+//                                                             tv.setText(senderName);
                                                              r.address = location;
                                                              r.senderGender = senderGender;
                                                              r.senderID = senderID;
                                                              r.recipientID = recipientID;
                                                              r.responseID = responseID;
                                                              r.invID = invitationID;
+                                                             r.accepted = accepted;
                                                              responsesList.add(r);
                                                              adapter.notifyDataSetChanged();
                                                          }

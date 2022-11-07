@@ -1,6 +1,8 @@
 package com.hfad.team32_homeshare;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +23,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.checkerframework.checker.units.qual.A;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,13 +58,21 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
     public void onBindViewHolder(@NonNull MyHolder holder, int i) {
         Response res = responseList.get(i);
         String userName = res.senderName;
-        String currentUser = res.senderID;
-        String recipient = res.recipientID;
-        String responseID = UUID.randomUUID().toString();
+        String senderID = res.senderID;
+//        String currentUser = res.senderID;
+//        String recipient = res.recipientID;
+        String responseID = res.responseID;
+//        String randomID = UUID.randomUUID().toString();
         String address = res.address;
         String datePosted = res.date;
         String message = res.message;
         String invID = res.invID;
+        Boolean accepted = res.accepted;
+        if (accepted) {
+            holder.messageButton.setVisibility(View.VISIBLE);
+            holder.yesButton.setVisibility(View.GONE);
+        }
+
         holder.nameTv.setText(userName);
         holder.dateTv.setText(datePosted);
 
@@ -126,29 +139,95 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                      @Override
                      public void onClick(View view) {
                          FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                         final EditText edit =  (EditText) popupView.findViewById(R.id.inviteEt);
+                         final EditText edit =  (EditText) popupView.findViewById(R.id.respondEt);
                          String getMessage = edit.getText().toString();
                          String currentDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
 
                          FirebaseFirestore db = FirebaseFirestore.getInstance();
-                         db.collection("users").document(recipient).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                         db.collection("users").document(senderID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                              @Override
                              public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                  if (task.isSuccessful()) {
+                                     String randResID = UUID.randomUUID().toString();
                                      DocumentSnapshot documentSnapshot = task.getResult();
-                                     ArrayList<String> invitesIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
-                                     invitesIDArray.add(responseID);
-                                     db.collection("users").document(recipient).update("responsesList", invitesIDArray);
 
-                                     Map<String, String> responseMap = new HashMap<>();
-                                     responseMap.put("date", currentDate);
-                                     responseMap.put("invitationID", invID);
-                                     responseMap.put("message", getMessage);
-                                     responseMap.put("recipientID", recipient);
-                                     responseMap.put("senderID", currentUser);
+                                     db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                         @Override
+                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                             if (task.isSuccessful()) {
+                                                 DocumentSnapshot ds = task.getResult();
+                                                 ArrayList<String> reIDArray = (ArrayList<String>) ds.get("responsesList");
+                                                 reIDArray.remove(responseID);
+                                                 db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("responsesList", reIDArray);
 
-                                     db.collection("responses").document(responseID).set(responseMap);
-                                     popupWindow.dismiss();
+                                                 db.collection("responses").document(responseID).delete();
+
+                                                 db.collection("invitations").document(invID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                     @Override
+                                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                         if (task.isSuccessful()) {
+                                                             DocumentSnapshot ds = task.getResult();
+                                                             int numSp = Integer.parseInt(ds.get("numSpotsLeft").toString());
+                                                             numSp--;
+                                                             if (numSp == 0) {
+                                                                 // Clear all responses related to this invitation and make invitation EXPIRED
+                                                                 db.collection("responses").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                     @Override
+                                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                         if (task.isSuccessful()) {
+                                                                             ArrayList<String> toDel = new ArrayList<>();
+                                                                             for (DocumentSnapshot ds : task.getResult()) {
+                                                                                 if (ds.get("invitationID").toString().equals(invID) && ds.get("accepted").toString().equals("false")) {
+                                                                                     toDel.add(ds.getId());
+                                                                                 }
+                                                                             }
+                                                                             for (String rID : toDel) {
+                                                                                 db.collection("responses").document(rID).delete();
+                                                                                 reIDArray.remove(rID);
+                                                                                 db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("responsesList", reIDArray);
+                                                                             }
+                                                                             ArrayList<String> resIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
+                                                                             resIDArray.add(randResID);
+                                                                             db.collection("users").document(senderID).update("responsesList", resIDArray);
+                                                                             Map<String, Object> responseMap = new HashMap<>();
+                                                                             responseMap.put("date", currentDate);
+                                                                             responseMap.put("invitationID", invID);
+                                                                             responseMap.put("message", getMessage);
+                                                                             responseMap.put("recipientID", senderID);
+                                                                             responseMap.put("accepted", true);
+                                                                             responseMap.put("senderID", firebaseAuth.getCurrentUser().getUid());
+
+                                                                             db.collection("responses").document(randResID).set(responseMap);
+                                                                         }
+                                                                     }
+                                                                 });
+                                                                 db.collection("invitations").document(invID).update("active", false);
+                                                             } else {
+                                                                 ArrayList<String> resIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
+                                                                 resIDArray.add(randResID);
+                                                                 db.collection("users").document(senderID).update("responsesList", resIDArray);
+                                                                 Map<String, Object> responseMap = new HashMap<>();
+                                                                 responseMap.put("date", currentDate);
+                                                                 responseMap.put("invitationID", invID);
+                                                                 responseMap.put("message", getMessage);
+                                                                 responseMap.put("recipientID", senderID);
+                                                                 responseMap.put("accepted", true);
+                                                                 responseMap.put("senderID", firebaseAuth.getCurrentUser().getUid());
+
+                                                                 db.collection("responses").document(randResID).set(responseMap);
+                                                             }
+                                                             db.collection("invitations").document(invID).update("numSpotsLeft", numSp);
+                                                             popupWindow.dismiss();
+                                                         }
+                                                     }
+                                                 });
+
+                                             }
+                                         }
+                                     });
+
+
+
                                  }
                              }
                          });
@@ -160,20 +239,101 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
         holder.noButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setCancelable(true);
+                builder.setTitle("Are you sure you want to permanently delete this response from " + userName + "?");
+                builder.setMessage("Pull down to see refreshed changes after confirming.");
+                builder.setPositiveButton("Confirm",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-                db.collection("users").document(currentUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot documentSnapshot = task.getResult();
+                                            ArrayList<String> responsesIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
+
+                                            responsesIDArray.remove(responseID);
+                                            db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("responsesList", responsesIDArray);
+                                            db.collection("responses").document(responseID).delete();
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot documentSnapshot = task.getResult();
-                            ArrayList<String> responsesIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
 
-                            responsesIDArray.remove(responseID);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
 
-                            db.collection("users").document(currentUser).update("responsesList", responsesIDArray);
-                        }
+        holder.messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.message_to_layout, null);
+                // create the popup window
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                // lets taps outside the popup also dismiss it
+                boolean focusable = true;
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                popupView.findViewById(R.id.sendMessage).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                        final EditText edit =  (EditText) popupView.findViewById(R.id.respondEt);
+                        String getMessage = edit.getText().toString();
+                        String currentDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+
+                        FirebaseFirestore db = FirebaseFirestore.getInstance();
+                        db.collection("users").document(senderID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    String randResID = UUID.randomUUID().toString();
+                                    DocumentSnapshot documentSnapshot = task.getResult();
+                                    ArrayList<String> resIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
+                                    resIDArray.add(randResID);
+                                    db.collection("users").document(senderID).update("responsesList", resIDArray);
+
+                                    db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot ds = task.getResult();
+                                                ArrayList<String> reIDArray = (ArrayList<String>) ds.get("responsesList");
+                                                reIDArray.remove(responseID);
+                                                db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("responsesList", reIDArray);
+                                                db.collection("responses").document(responseID).delete();
+
+                                                Map<String, Object> responseMap = new HashMap<>();
+                                                responseMap.put("date", currentDate);
+                                                responseMap.put("invitationID", invID);
+                                                responseMap.put("message", getMessage);
+                                                responseMap.put("recipientID", senderID);
+                                                responseMap.put("accepted", true);
+                                                responseMap.put("senderID", firebaseAuth.getCurrentUser().getUid());
+
+                                                db.collection("responses").document(randResID).set(responseMap);
+                                                popupWindow.dismiss();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
                     }
                 });
             }
@@ -189,7 +349,7 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
     class MyHolder extends RecyclerView.ViewHolder {
         //        ImageView
         TextView nameTv, dateTv;
-        Button yesButton, noButton, sendButton;
+        Button yesButton, noButton, sendButton, messageButton;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -198,6 +358,7 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
             yesButton = itemView.findViewById(R.id.yesResponse);
             noButton = itemView.findViewById(R.id.noResponse);
             sendButton = itemView.findViewById(R.id.submitMessage);
+            messageButton = itemView.findViewById(R.id.messageSendBtn);
         }
 
 //        void setDetails(Response inv) {

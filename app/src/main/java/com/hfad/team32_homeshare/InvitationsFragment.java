@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -105,6 +107,17 @@ public class InvitationsFragment extends Fragment {
         // Spinner which binds data to spinner
         spin.setAdapter(ad);
         spinTwo.setAdapter(adTwo);
+
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                invitationsList.clear();
+                CreateDataForCards(view);
+            }
+        });
+
 
         Button btn = (Button) view.findViewById(R.id.searchBtn);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -359,42 +372,55 @@ public class InvitationsFragment extends Fragment {
     }
 
     private void CreateDataForCards(View view) {
-//        TextView textView = view.findViewById(R.id.randomText);
+        TextView textView = view.findViewById(R.id.randomText);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("invitations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    DocumentSnapshot ds = task.getResult();
+                    ArrayList<String> al = (ArrayList<String>) ds.get("declinedInvitationsList");
+
+                    db.collection("invitations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    if (!al.contains(document.getId()) && !document.get("active").toString().equals("false")) {
 //                        Map<String, Object> map = document.getData();
 //                        textView.setText(document.get("date").toString());
 //                        DocumentReference ref = document.getDocumentReference("owner");
 //                        DocumentSnapshot doc = ref.get().getResult();
-                        String ownerID = document.get("ownerID").toString();
-                        String invID = document.getId();
-                        db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot doc = task.getResult();
-                                    String fullName = doc.get("fullName").toString();
-                                    Invitation inv = new Invitation();
-                                    inv.fullName = fullName;
-                                    inv.invitationID = invID;
-                                    inv.ownerID = ownerID;
-                                    inv.date = document.get("date").toString();
-                                    inv.home = (Map<String, Object>) document.get("home");
-                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
-                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
-                                    inv.expectation = document.get("expectation").toString();
-                                    invitationsList.add(inv);
-                                    adapter.notifyDataSetChanged();
+                                        String ownerID = document.get("ownerID").toString();
+                                        String invID = document.getId();
+                                        db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot doc = task.getResult();
+                                                    String fullName = doc.get("fullName").toString();
+                                                    Invitation inv = new Invitation();
+                                                    inv.fullName = fullName;
+                                                    inv.invitationID = invID;
+                                                    inv.ownerID = ownerID;
+                                                    inv.date = document.get("date").toString();
+                                                    inv.home = (Map<String, Object>) document.get("home");
+                                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                                    inv.expectation = document.get("expectation").toString();
+                                                    invitationsList.add(inv);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        });
+                                    }
                                 }
                             }
-                        });
-                    }
+                        }
+                    });
                 }
             }
         });

@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 //        firebaseAuth = FirebaseAuth.getInstance();
-//        checkUser();
+        checkUser();
 
         replaceFragment(new InvitationsFragment());
 
@@ -458,8 +458,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkUser() {
         // check if user is already logged in, if so then open profile activity
-
-        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (firebaseUser == null) {
             // user is already logged in
             startActivity(new Intent(MainActivity.this, LoginActivity.class));

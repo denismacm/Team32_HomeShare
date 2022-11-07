@@ -4,6 +4,7 @@ public class Response {
     public String responseID;
     public String senderName;
     public String recipientID;
+    public Boolean accepted;
     public String senderID;
     public String date;
     public String message;
