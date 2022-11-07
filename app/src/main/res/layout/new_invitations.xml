@@ -27,7 +27,7 @@
             android:text="@string/home_type"
             android:textColor="@color/black"
             android:layout_below="@id/name"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginTop="10dp"/>
         <Spinner
             android:id="@+id/homeTypeSpinner"
@@ -43,7 +43,7 @@
             android:layout_below="@id/homeTypeSpinner"
             android:text="@string/bed_num"
             android:textColor="@color/black"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
         <Spinner
             android:id="@+id/bedSpinner"
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
             android:text="@string/bath_num"
             android:textColor="@color/black"
             android:layout_below="@id/bedSpinner"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
         <Spinner
             android:id="@+id/bathSpinner"
             android:layout_width="match_parent"
@@ -111,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/deadline"
                 android:textColor="@color/black"
-                android:textSize="18dp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -247,7 +247,7 @@
             android:text="@string/roommate"
             android:textColor="@color/black"
             android:layout_below="@id/addressTil"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginTop="10dp"/>
         <Spinner
             android:id="@+id/roommateSpinner"
@@ -262,7 +262,7 @@
             android:text="@string/spots"
             android:textColor="@color/black"
             android:layout_below="@id/roommateSpinner"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:layout_marginTop="10dp"/>
         <Spinner
             android:id="@+id/spotSpinner"

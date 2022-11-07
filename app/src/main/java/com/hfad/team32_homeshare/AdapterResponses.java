@@ -1,6 +1,7 @@
 package com.hfad.team32_homeshare;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,14 +75,26 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                 View popupView = inflater.inflate(R.layout.overlay_invitations, null);
 
                 // create the popup window
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int width = LinearLayout.LayoutParams.MATCH_PARENT;
+                int height = LinearLayout.LayoutParams.MATCH_PARENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(userName);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(datePosted);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(address);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.bbQuantityOL)).setText(message);
+                String title = "<b>Response Details</b>";
+                ((TextView)popupWindow.getContentView().findViewById(R.id.detailTitle)).setText(Html.fromHtml(title));
+                String name = "<b>Name: </b>" + userName;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(Html.fromHtml(name));
+                String location = "<b>Address: </b>" + address;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(Html.fromHtml(location));
+                String date = "<b>Date posted: </b>" + datePosted;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(Html.fromHtml(date));
+                String description = "<b>Message: </b>" + message;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.bbQuantityOL)).setText(Html.fromHtml(description));
+                popupView.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                });
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);

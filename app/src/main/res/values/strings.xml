@@ -55,4 +55,6 @@
     <string name="submit">Submit</string>
     <string name="spots">Number of Spots Left</string>
     <string name="roommate">Roommates Capacity</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="invitation_details">Invitation Details</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.hfad.team32_homeshare;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,9 +61,6 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
         Map<String, Object> home = inv.home;
         String location = home.get("location").toString();
-        String bbQuantity = home.get("bbQuantity").toString();
-        String deadline = "Deadline: " + home.get("deadline").toString();
-        String homeType = "Home Type: " + home.get("homeType").toString();
         Boolean userPriceRange = (Boolean) home.get("userPriceRange");
 //        String price;
 //        if (userPriceRange) {
@@ -73,10 +71,10 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 //        }
         String numRoommatesCapacity = "Looking for " + String.valueOf(inv.numRoommatesCapacity) + " roommates";
         String numSpotsLeft = String.valueOf(inv.numSpotsLeft) + " spots left";
-
+        String date = "Date posted: " + datePosted;
         holder.nameTv.setText(fullName);
         holder.locationTv.setText(location);
-        holder.datePostedTv.setText("Date posted: " + datePosted);
+        holder.datePostedTv.setText(date);
 
 //        Invitation invite = invitationList.get(i);
 //        holder.setDetails(invite);
@@ -91,28 +89,42 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 View popupView = inflater.inflate(R.layout.overlay_invitations, null);
 
                 // create the popup window
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int width = LinearLayout.LayoutParams.MATCH_PARENT;
+                int height = LinearLayout.LayoutParams.MATCH_PARENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(fullName);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(location);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(datePosted);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.bbQuantityOL)).setText(bbQuantity);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.deadlineOL)).setText(deadline);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.homeTypeOL)).setText(homeType);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.expectationOL)).setText(expectation);
+                String title = "<b>Invitation Details</b>";
+                ((TextView)popupWindow.getContentView().findViewById(R.id.detailTitle)).setText(Html.fromHtml(title));
+                String name = "<b>Name: </b>" + fullName;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(Html.fromHtml(name));
+                String address = "<b>Address: </b>" + location;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(Html.fromHtml(address));
+                String date = "<b>Date posted: </b>" + datePosted;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(Html.fromHtml(date));
+                String bbQuantity = "<b>Bed/Bath: </b>" + home.get("bbQuantity").toString();
+                ((TextView)popupWindow.getContentView().findViewById(R.id.bbQuantityOL)).setText(Html.fromHtml(bbQuantity));
+                String deadline = "<b>Deadline: </b>" + home.get("deadline").toString();
+                ((TextView)popupWindow.getContentView().findViewById(R.id.deadlineOL)).setText(Html.fromHtml(deadline));
+                String homeType = "<b>Home Type: </b>" + home.get("homeType").toString();
+                ((TextView)popupWindow.getContentView().findViewById(R.id.homeTypeOL)).setText(Html.fromHtml(homeType));
+                String description = "<b>Roommate Expectations: </b><br>" + expectation;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.expectationOL)).setText(Html.fromHtml(description));
                 String price = "";
                 if (userPriceRange) {
-                    price = "Min Price: " + home.get("minPrice");
-                    price += "Max Price: " + home.get("maxPrice");
+                    price = "<b>Min Price: </b>" + home.get("minPrice");
+                    price += "<br><b>Max Price: </b>" + home.get("maxPrice");
                 } else {
-                    price = "Price: " + home.get("onePrice");
+                    price = "<b>Price: </b>" + home.get("onePrice");
                 }
-                ((TextView)popupWindow.getContentView().findViewById(R.id.priceOL)).setText(price);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.priceOL)).setText(Html.fromHtml(price));
                 ((TextView)popupWindow.getContentView().findViewById(R.id.numCapacityOL)).setText(numRoommatesCapacity);
                 ((TextView)popupWindow.getContentView().findViewById(R.id.numSpotsOL)).setText(numSpotsLeft);
-
+                popupView.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        popupWindow.dismiss();
+                    }
+                });
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
