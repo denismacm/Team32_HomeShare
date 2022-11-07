@@ -5,6 +5,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -110,6 +111,33 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             }
         });
 
+        holder.messageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.respond_to_layout, null);
+                // create the popup window
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                // lets taps outside the popup also dismiss it
+                boolean focusable = true;
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            }
+        });
+
+//        holder.noButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            }
+//        });
+
+//       holder.sendButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            }
+//       });
+
     }
 
     @Override
@@ -120,13 +148,16 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
     class MyHolder extends RecyclerView.ViewHolder {
 //        ImageView
         TextView nameTv, locationTv, datePostedTv;
+        Button messageButton, deleteButton, sendButton;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             nameTv = itemView.findViewById(R.id.name);
             locationTv = itemView.findViewById(R.id.location);
             datePostedTv = itemView.findViewById(R.id.datePosted);
-
+            messageButton = itemView.findViewById(R.id.respondTo);
+            deleteButton = itemView.findViewById(R.id.rejectInv);
+            sendButton = itemView.findViewById(R.id.submitInvite);
         }
 
 //        void setDetails(Invitation inv) {
