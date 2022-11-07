@@ -5,10 +5,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHolder> {
 
@@ -32,7 +31,7 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
     @Override
     public AdapterResponses.MyHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
 //        Context context = viewGroup.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.activity_cards, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.responses_cards, viewGroup, false);
 
         return new MyHolder(view);
     }
@@ -60,8 +59,8 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                 int height = LinearLayout.LayoutParams.WRAP_CONTENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.name1)).setText(userName);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.email1)).setText(userEmail);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(userName);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(userEmail);
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -76,7 +75,34 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
             }
         });
 
+        holder.yesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View popupView = inflater.inflate(R.layout.respond_to_layout, null);
+                // create the popup window
+                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                // lets taps outside the popup also dismiss it
+                boolean focusable = true;
+                final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+                popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            }
+        });
+
+//        holder.noButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            }
+//        });
+
+//       holder.sendButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//            }
+//       });
     }
+
 
     @Override
     public int getItemCount() {
@@ -86,11 +112,15 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
     class MyHolder extends RecyclerView.ViewHolder {
         //        ImageView
         TextView nameTv, emailTv;
+        Button yesButton, noButton, sendButton;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             nameTv = itemView.findViewById(R.id.name);
             emailTv = itemView.findViewById(R.id.email);
+            yesButton = itemView.findViewById(R.id.yesResponse);
+            noButton = itemView.findViewById(R.id.noResponse);
+            sendButton = itemView.findViewById(R.id.submitMessage);
         }
 
 //        void setDetails(Response inv) {

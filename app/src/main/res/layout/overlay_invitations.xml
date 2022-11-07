@@ -12,13 +12,55 @@
         android:orientation="vertical"
         android:padding="12dp">
         <TextView
-            android:id="@+id/name1"
+            android:id="@+id/nameOL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <TextView
-            android:id="@+id/email1"
+            android:id="@+id/datePostedOL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/locationOL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/bbQuantityOL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/deadlineOL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/homeTypeOL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/priceOL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/numCapacityOL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/numSpotsOL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
