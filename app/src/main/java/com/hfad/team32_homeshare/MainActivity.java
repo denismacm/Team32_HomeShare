@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 100 && resultCode == RESULT_OK) {
             assert data != null;
             Place place = Autocomplete.getPlaceFromIntent(data);
-            editText.setText(place.getAddress());
+            editText.setText(place.getName());
 //            textView1.setText(String.format("Locality Name: %s", place.getName()));
 //            textView2.setText(String.valueOf(place.getLatLng()));
             float[] res = new float[3];
