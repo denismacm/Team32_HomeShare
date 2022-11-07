@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -40,7 +39,8 @@
                 android:id="@+id/bed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bedroom Number"
+                android:hint="@string/bed_num"
+                android:autofillHints="0"
                 android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,7 +57,8 @@
                 android:id="@+id/bath"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Bathroom Number"
+                android:autofillHints="0"
+                android:hint="@string/bath_num"
                 android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,7 +75,8 @@
                 android:id="@+id/date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Deadline (MM/DD/YY)"
+                android:autofillHints="00/00/00"
+                android:hint="@string/deadline"
                 android:inputType="datetime"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -83,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_below="@id/dateTil"
-            android:text="Set range for price"
+            android:text="@string/set_range_for_price"
             android:checked="true"/>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -99,7 +101,8 @@
                 android:id="@+id/price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Price"
+                android:autofillHints="0"
+                android:hint="@string/price"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -113,7 +116,6 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/minPriceTil"
                 android:layout_width="150dp"
-                android:layout_centerInParent="true"
                 android:layout_height="wrap_content"
                 >
 
@@ -121,7 +123,8 @@
                     android:id="@+id/minPriceEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Min Price"
+                    android:autofillHints="0"
+                    android:hint="@string/min_price"
                     android:inputType="number" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -136,7 +139,8 @@
                     android:id="@+id/maxPriceEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Max Price"
+                    android:autofillHints="0"
+                    android:hint="@string/max_price"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -150,11 +154,15 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Address"
-                android:inputType="text"/>
+                android:id="@+id/address"
+                android:hint="@string/address"
+                android:padding="16dp"
+                android:drawablePadding="16dp"
+                android:drawableLeft="@drawable/ic_location"
+                android:gravity="center_vertical"
+                android:background="@android:drawable/editbox_background"/>
         </com.google.android.material.textfield.TextInputLayout>
         <!--Requirement-->
         <com.google.android.material.textfield.TextInputLayout
@@ -170,6 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/descrip"
+                android:autofillHints="home"
                 android:inputType="textMultiLine|textCapSentences|textAutoCorrect"/>
         </com.google.android.material.textfield.TextInputLayout>
         <Button
@@ -178,7 +187,7 @@
             android:layout_width="wrap_content"
             android:layout_below="@id/requirementTil"
             android:layout_centerInParent="true"
-            android:text="Submit"
+            android:text="@string/submit"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"/>
 
