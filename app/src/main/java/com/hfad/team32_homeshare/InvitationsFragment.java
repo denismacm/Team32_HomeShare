@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
@@ -17,6 +20,7 @@ public class InvitationsFragment extends Fragment {
     private RecyclerView recyclerView;
     private AdapterInvitations adapter;
     private ArrayList<Invitation> invitationsList;
+
 
     public InvitationsFragment() {
         // Required empty public constructor
@@ -31,6 +35,7 @@ public class InvitationsFragment extends Fragment {
         InitializeCardView(view);
         return view;
     }
+
 
     private void InitializeCardView(View view) {
         recyclerView = view.findViewById(R.id.invite_1);

@@ -21,4 +21,7 @@
     <string name="repeat_password">Repeat Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="description">Description</string>
+    <string name="home_type">Home Type</string>
+    <string name="descrip">Your expectation for roommate</string>
+    <string name="post">Post New Invitation</string>
 </resources>

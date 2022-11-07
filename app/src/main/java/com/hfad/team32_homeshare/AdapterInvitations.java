@@ -13,6 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +47,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
 //        Invitation invite = invitationList.get(i);
 //        holder.setDetails(invite);
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,11 +89,13 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
     class MyHolder extends RecyclerView.ViewHolder {
 //        ImageView
         TextView nameTv, emailTv;
+//        FloatingActionButton fab;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             nameTv = itemView.findViewById(R.id.name);
             emailTv = itemView.findViewById(R.id.email);
+//            fab = itemView.findViewById((R.id.fab));
         }
 
 //        void setDetails(Invitation inv) {
