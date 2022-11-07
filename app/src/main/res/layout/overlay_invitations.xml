@@ -65,6 +65,12 @@
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/expectationOL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
     </LinearLayout>
 
 

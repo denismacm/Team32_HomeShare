@@ -9,7 +9,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:padding="30dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layout_marginTop="90dp">
 
         <TextView
             android:id="@+id/name"
@@ -53,7 +54,7 @@
             android:id="@+id/bathTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/bed_num"
+            android:text="@string/bath_num"
             android:textColor="@color/black"
             android:layout_below="@id/bedSpinner"
             android:textSize="18dp" />
@@ -239,11 +240,41 @@
                 android:gravity="center_vertical"
                 android:background="@android:drawable/editbox_background"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/roommates"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/roommate"
+            android:textColor="@color/black"
+            android:layout_below="@id/addressTil"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"/>
+        <Spinner
+            android:id="@+id/roommateSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/roommates"
+            android:spinnerMode="dialog" />
+        <TextView
+            android:id="@+id/spots"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/spots"
+            android:textColor="@color/black"
+            android:layout_below="@id/roommateSpinner"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"/>
+        <Spinner
+            android:id="@+id/spotSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/spots"
+            android:spinnerMode="dialog" />
         <!--Requirement-->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/requirementTil"
             android:layout_width="match_parent"
-            android:layout_below="@id/addressTil"
+            android:layout_below="@id/spotSpinner"
             android:layout_marginTop="10dp"
             android:layout_centerInParent="true"
             android:layout_height="wrap_content">

@@ -42,6 +42,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         Invitation inv = invitationList.get(i);
         String fullName = inv.fullName;
         String datePosted = inv.date;
+        String expectation = inv.expectation;
 
         Map<String, Object> home = inv.home;
         String location = home.get("location").toString();
@@ -86,6 +87,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 ((TextView)popupWindow.getContentView().findViewById(R.id.bbQuantityOL)).setText(bbQuantity);
                 ((TextView)popupWindow.getContentView().findViewById(R.id.deadlineOL)).setText(deadline);
                 ((TextView)popupWindow.getContentView().findViewById(R.id.homeTypeOL)).setText(homeType);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.expectationOL)).setText(expectation);
                 String price = "";
                 if (userPriceRange) {
                     price = "Min Price: " + home.get("minPrice");

@@ -11,6 +11,7 @@ public class Invitation {
     public int numSpotsLeft;
     public String fullName;
     public Map<String, Object> home;
+    public String expectation;
 
     public Invitation() {}
 

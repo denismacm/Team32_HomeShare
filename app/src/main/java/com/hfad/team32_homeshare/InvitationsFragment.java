@@ -40,9 +40,9 @@ public class InvitationsFragment extends Fragment {
     private ArrayList<Invitation> invitationsList;
     private Spinner spin;
     private Spinner spinTwo;
-    private String[] items = new String[]{"Reset to default", "Name", "Gender", "Class Standing", "Distance in miles",
-            "Number of Bedrooms","Number of Bathrooms", "Price", "Maximum Number of Roommates"};
-    private String[] order = new String[]{"Ascending", "Descending"};
+    private String[] items = new String[]{"Reset to default", "First Name", "Gender", "Class Standing", "Distance (miles, filter by maximum)",
+            "Number of Bedrooms","Number of Bathrooms", "Price (filter by maximum)", "Number of Roommates", "Deadline (filter before)", "Date Posted (filter before)"};
+    private String[] order = new String[]{"Reset to default", "Ascending", "Descending"};
 
     public InvitationsFragment() {
         // Required empty public constructor
@@ -110,7 +110,7 @@ public class InvitationsFragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String text = et.getText().toString().toLowerCase();
+                String text = et.getText().toString().trim().toLowerCase();
                 String query = spin.getSelectedItem().toString();
 //                if (text.equals("")) {
 //                    invitationsList.clear();
@@ -119,7 +119,7 @@ public class InvitationsFragment extends Fragment {
                 if (query.equals("Gender")){
 //                    textView.setText(text+query);
                     invitationsList.clear();
-                    db.collection("users").whereEqualTo("gender", text).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    db.collection("users").whereGreaterThanOrEqualTo("gender", text).whereLessThanOrEqualTo("gender", text+"\uF7FF").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
@@ -148,38 +148,197 @@ public class InvitationsFragment extends Fragment {
                             }
                         }
                     });
-                } else if (query.equals("Name")) {
+                } else if (query.equals("First Name")) {
                     Toast.makeText(view.getContext(), "Name not supported", Toast.LENGTH_LONG);
-//                    invitationsList.clear();
-//                    db.collection("users").whereGreaterThanOrEqualTo("fullNameLower", text).whereLessThanOrEqualTo("fullNameLower", text+"\uF7FF").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                        @Override
-//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                            if (task.isSuccessful()) {
-//                                for (QueryDocumentSnapshot user : task.getResult()) {
-//                                    String ownerID = user.getId();
-//                                    String fullName = user.get("fullName").toString();
-//                                    textView.setText(fullName);
-//                                    db.collection("invitations").whereEqualTo("ownerID",ownerID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                                            if (task.isSuccessful()) {
-//                                                for (QueryDocumentSnapshot document : task.getResult()) {
-//                                                    Invitation inv = new Invitation();
-//                                                    inv.fullName = fullName;
-//                                                    inv.date = document.get("date").toString();
-//                                                    inv.home = (Map<String, Object>) document.get("home");
-//                                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
-//                                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
-//                                                    invitationsList.add(inv);
-//                                                    adapter.notifyDataSetChanged();
-//                                                }
-//                                            }
-//                                        }
-//                                    });
-//                                }
-//                            }
-//                        }
-//                    });
+                    invitationsList.clear();
+                    db.collection("users").whereGreaterThanOrEqualTo("fullNameLower", text).whereLessThanOrEqualTo("fullNameLower", text+"\uF7FF").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot user : task.getResult()) {
+                                    String ownerID = user.getId();
+                                    String fullName = user.get("fullName").toString();
+                                    textView.setText(fullName);
+                                    db.collection("invitations").whereEqualTo("ownerID",ownerID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    Invitation inv = new Invitation();
+                                                    inv.fullName = fullName;
+                                                    inv.date = document.get("date").toString();
+                                                    inv.home = (Map<String, Object>) document.get("home");
+                                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                                    invitationsList.add(inv);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                } else if (query.equals("Class Standing")) {
+                    invitationsList.clear();
+                    db.collection("users").whereGreaterThanOrEqualTo("classStanding", text).whereLessThanOrEqualTo("classStanding", text+"\uF7FF").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot user : task.getResult()) {
+                                    String ownerID = user.getId();
+                                    String fullName = user.get("fullName").toString();
+                                    textView.setText(fullName);
+                                    db.collection("invitations").whereEqualTo("ownerID",ownerID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    Invitation inv = new Invitation();
+                                                    inv.fullName = fullName;
+                                                    inv.date = document.get("date").toString();
+                                                    inv.home = (Map<String, Object>) document.get("home");
+                                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                                    invitationsList.add(inv);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
+                } else if (query.equals("Number of Bedrooms")) {
+                    try {
+                        invitationsList.clear();
+                        int numBed = Integer.parseInt(text);
+                        db.collection("invitations").whereEqualTo("home.numBedrooms", numBed).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String ownerID = document.get("ownerID").toString();
+                                        db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot doc = task.getResult();
+                                                    String fullName = doc.get("fullName").toString();
+                                                    Invitation inv = new Invitation();
+                                                    inv.fullName = fullName;
+                                                    inv.date = document.get("date").toString();
+                                                    inv.home = (Map<String, Object>) document.get("home");
+                                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                                    invitationsList.add(inv);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
+                } else if (query.equals("Number of Bathrooms")) {
+                    try {
+                        invitationsList.clear();
+                        int numBath = Integer.parseInt(text);
+                        db.collection("invitations").whereEqualTo("home.numBathrooms", numBath).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String ownerID = document.get("ownerID").toString();
+                                        db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot doc = task.getResult();
+                                                    String fullName = doc.get("fullName").toString();
+                                                    Invitation inv = new Invitation();
+                                                    inv.fullName = fullName;
+                                                    inv.date = document.get("date").toString();
+                                                    inv.home = (Map<String, Object>) document.get("home");
+                                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                                    invitationsList.add(inv);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
+                } else if (query.equals("Number of Roommates")) {
+                    try {
+                        invitationsList.clear();
+                        int numRoom = Integer.parseInt(text);
+                        db.collection("invitations").whereEqualTo("numRoommatesCapacity", numRoom).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String ownerID = document.get("ownerID").toString();
+                                        db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                if (task.isSuccessful()) {
+                                                    DocumentSnapshot doc = task.getResult();
+                                                    String fullName = doc.get("fullName").toString();
+                                                    Invitation inv = new Invitation();
+                                                    inv.fullName = fullName;
+                                                    inv.date = document.get("date").toString();
+                                                    inv.home = (Map<String, Object>) document.get("home");
+                                                    inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                                    inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                                    invitationsList.add(inv);
+                                                    adapter.notifyDataSetChanged();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            }
+                        });
+                    } catch (Exception e) {
+                    }
+                } else if (query.equals("Deadline (filter before)")) {
+                    invitationsList.clear();
+                    db.collection("invitations").whereLessThanOrEqualTo("home.deadline", text).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    String ownerID = document.get("ownerID").toString();
+                                    db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot doc = task.getResult();
+                                                String fullName = doc.get("fullName").toString();
+                                                Invitation inv = new Invitation();
+                                                inv.fullName = fullName;
+                                                inv.date = document.get("date").toString();
+                                                inv.home = (Map<String, Object>) document.get("home");
+                                                inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                                inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                                invitationsList.add(inv);
+                                                adapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    });
                 }
 //                textView.setText(text+query);
 //                Toast.makeText(view.getContext(), text, Toast.LENGTH_LONG);
@@ -229,6 +388,7 @@ public class InvitationsFragment extends Fragment {
                                     inv.home = (Map<String, Object>) document.get("home");
                                     inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
                                     inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                    inv.expectation = document.get("expectation").toString();
                                     invitationsList.add(inv);
                                     adapter.notifyDataSetChanged();
                                 }
