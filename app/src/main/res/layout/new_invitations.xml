@@ -1,86 +1,187 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:padding="30dp"
+        android:background="#BBBBBB">
 
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#FFFFFF">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "24sp"
+            android:text="@string/post"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
 
-    <!--Home Type-->
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/homeTypeTil"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="150dp">-->
+        <Spinner
+            android:id="@+id/homeTypeSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/name"
+            android:spinnerMode="dialog" />
 
-<!--        <EditText-->
-<!--            android:id="@+id/home"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Home Type"-->
-<!--            android:inputType="text"/>-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+        <!--Description-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/descriptionTil"
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/homeTypeSpinner">
 
-<!--    &lt;!&ndash;Description&ndash;&gt;-->
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/descriptionTil"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@id/homeTypeTil">-->
+            <EditText
+                android:id="@+id/bed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bedroom Number"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <EditText-->
-<!--            android:id="@+id/descriptionEt"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="@string/description"-->
-<!--            android:inputType="textMultiLine|textCapSentences|textAutoCorrect"/>-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+        <!--Day-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/bathTil"
+            android:layout_width="match_parent"
+            android:layout_below="@id/descriptionTil"
+            android:layout_marginTop="10dp"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content">
 
-<!--    &lt;!&ndash;Day&ndash;&gt;-->
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/dayTil"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_below="@id/descriptionTil"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        app:passwordToggleEnabled="true"-->
-<!--        android:layout_height="wrap_content">-->
+            <EditText
+                android:id="@+id/bath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Bathroom Number"
+                android:inputType="number"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-<!--        <EditText-->
-<!--            android:id="@+id/dateEt"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="04"-->
-<!--            android:inputType="date"/>-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+        <!--Day-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dateTil"
+            android:layout_width="match_parent"
+            android:layout_below="@id/bathTil"
+            android:layout_marginTop="10dp"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Deadline (MM/DD/YY)"
+                android:inputType="datetime"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <CheckBox
+            android:id="@+id/checkboxPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_below="@id/dateTil"
+            android:text="Set range for price"
+            android:checked="true"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/priceTil"
+            android:layout_width="match_parent"
+            android:layout_below="@id/checkboxPrice"
+            android:layout_marginTop="10dp"
+            android:layout_centerInParent="true"
+            android:layout_height="50dp"
+            android:visibility="invisible">
+
+            <EditText
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Price"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-<!--    &lt;!&ndash;Requirement&ndash;&gt;-->
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        android:id="@+id/requirementTil"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_below="@id/dayTil"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        app:passwordToggleEnabled="true"-->
-<!--        android:layout_height="wrap_content">-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/checkboxPrice"
+            android:visibility="visible">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/minPriceTil"
+                android:layout_width="150dp"
+                android:layout_centerInParent="true"
+                android:layout_height="wrap_content"
+                >
 
-<!--        <EditText-->
-<!--            android:id="@+id/requirementEt"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Your expectation for roommate"-->
-<!--            android:inputType="textMultiLine|textCapSentences|textAutoCorrect"/>-->
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
+                <EditText
+                    android:id="@+id/minPriceEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Min Price"
+                    android:inputType="number" />
 
-<!--    &lt;!&ndash;Login Button&ndash;&gt;-->
-<!--    <Button-->
-<!--        android:id="@+id/registerBtn"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_below="@id/passwordConfirmTil"-->
-<!--        android:text="@string/sign_up"/>-->
+            </com.google.android.material.textfield.TextInputLayout>
 
-</RelativeLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/maxPriceTil"
+                android:layout_width="150dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/maxPriceEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Max Price"
+                    android:inputType="number" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addressTil"
+            android:layout_width="match_parent"
+            android:layout_below="@id/priceTil"
+            android:layout_marginTop="10dp"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <!--Requirement-->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/requirementTil"
+            android:layout_width="match_parent"
+            android:layout_below="@id/addressTil"
+            android:layout_marginTop="10dp"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/requirementEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/descrip"
+                android:inputType="textMultiLine|textCapSentences|textAutoCorrect"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <Button
+            android:id="@+id/button_id"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/requirementTil"
+            android:layout_centerInParent="true"
+            android:text="Submit"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+
+    </RelativeLayout>
+</ScrollView>
