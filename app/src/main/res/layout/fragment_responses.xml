@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:drawableStart="@android:drawable/ic_menu_search"
-        android:hint="Search for Responses" />
+        android:hint="Filter responses by..." />
 
     <Spinner
         android:id="@+id/responsesFilter"
