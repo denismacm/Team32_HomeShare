@@ -3,6 +3,7 @@ package com.hfad.team32_homeshare;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,9 +14,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ResponsesFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -97,26 +108,83 @@ public class ResponsesFragment extends Fragment {
         adapter = new AdapterResponses(getActivity(), responsesList);
         recyclerView.setAdapter(adapter);
 
-        CreateDataForCards();
+        CreateDataForCards(view);
     }
 
-    private void CreateDataForCards() {
-        Response inv1 = new Response("Response 1", "Denis Mac");
-        responsesList.add(inv1);
-        Response inv2 = new Response("Response 2", "Aaron Wong");
-        responsesList.add(inv2);
-        Response inv3 = new Response("Response 3", "Michael Kim");
-        responsesList.add(inv3);
-        Response inv4 = new Response("Response 4", "Lana Nguyen");
-        responsesList.add(inv4);
-        Response inv5 = new Response("Response 5", "Lilly Tran");
-        responsesList.add(inv5);
-        Response inv6 = new Response("Response 6", "Jefferson Nguyen");
-        responsesList.add(inv6);
-        Response inv7 = new Response("Response 7", "Teresa Tran");
-        responsesList.add(inv7);
+    private void CreateDataForCards(View view) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        String uid = firebaseAuth.getCurrentUser().getUid();
+//        TextView tv = view.findViewById(R.id.rando);
+        db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+             @Override
+             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                 if (task.isSuccessful()) {
+                     DocumentSnapshot documentSnapshot = task.getResult();
+                     ArrayList<String> respon = (ArrayList<String>) documentSnapshot.get("responsesList");
+                     for (String res : respon) {
+                         db.collection("responses").document(res).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                             @Override
+                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                 if (task.isSuccessful()) {
+                                     DocumentSnapshot doc = task.getResult();
+                                     String senderID = doc.get("senderID").toString();
+                                     String invitationID = doc.get("invitationID").toString();
+                                     String message = doc.get("message").toString();
+                                     String datePosted = doc.get("date").toString();
+                                     db.collection("invitations").document(invitationID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                         @Override
+                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                             if (task.isSuccessful()) {
+                                                 DocumentSnapshot d = task.getResult();
+                                                 String location = d.get("home.location").toString();
+//                                                 tv.setText(location);
+                                                 db.collection("users").document(senderID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                     @Override
+                                                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                         if (task.isSuccessful()) {
+                                                             DocumentSnapshot m = task.getResult();
+                                                             String senderName = m.get("fullName").toString();
+                                                             String senderGender = m.get("gender").toString();
+                                                             Response r = new Response();
+                                                             r.date = datePosted;
+                                                             r.message = message;
+                                                             r.senderName = senderName;
+                                                             r.address = location;
+                                                             r.senderGender = senderGender;
+                                                             responsesList.add(r);
+                                                             adapter.notifyDataSetChanged();
+                                                         }
+                                                     }
+                                                 });
+                                             }
+                                         }
+                                     });
+                                 }
+                             }
+                         });
+                     }
+                 }
+             }
+        });
 
-        adapter.notifyDataSetChanged();
+
+//        Response inv1 = new Response("Response 1", "Denis Mac");
+//        responsesList.add(inv1);
+//        Response inv2 = new Response("Response 2", "Aaron Wong");
+//        responsesList.add(inv2);
+//        Response inv3 = new Response("Response 3", "Michael Kim");
+//        responsesList.add(inv3);
+//        Response inv4 = new Response("Response 4", "Lana Nguyen");
+//        responsesList.add(inv4);
+//        Response inv5 = new Response("Response 5", "Lilly Tran");
+//        responsesList.add(inv5);
+//        Response inv6 = new Response("Response 6", "Jefferson Nguyen");
+//        responsesList.add(inv6);
+//        Response inv7 = new Response("Response 7", "Teresa Tran");
+//        responsesList.add(inv7);
+//
+//        adapter.notifyDataSetChanged();
     }
 
 }

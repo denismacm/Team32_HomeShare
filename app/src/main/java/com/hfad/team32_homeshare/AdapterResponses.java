@@ -38,10 +38,13 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
 
     @Override
     public void onBindViewHolder(@NonNull MyHolder holder, int i) {
-        String userName = responseList.get(i).getResponsesID();
-        String userEmail = responseList.get(i).getUserName();
+        Response res = responseList.get(i);
+        String userName = res.senderName;
+        String address = res.address;
+        String datePosted = res.date;
+        String message = res.message;
         holder.nameTv.setText(userName);
-        holder.emailTv.setText(userEmail);
+        holder.dateTv.setText(datePosted);
 
 //        Response invite = responseList.get(i);
 //        holder.setDetails(invite);
@@ -60,7 +63,9 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
                 ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(userName);
-                ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(userEmail);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(datePosted);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(address);
+                ((TextView)popupWindow.getContentView().findViewById(R.id.bbQuantityOL)).setText(message);
                 // show the popup window
                 // which view you pass in doesn't matter, it is only used for the window tolken
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -111,13 +116,13 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
 
     class MyHolder extends RecyclerView.ViewHolder {
         //        ImageView
-        TextView nameTv, emailTv;
+        TextView nameTv, dateTv;
         Button yesButton, noButton, sendButton;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
             nameTv = itemView.findViewById(R.id.name);
-            emailTv = itemView.findViewById(R.id.email);
+            dateTv = itemView.findViewById(R.id.date);
             yesButton = itemView.findViewById(R.id.yesResponse);
             noButton = itemView.findViewById(R.id.noResponse);
             sendButton = itemView.findViewById(R.id.submitMessage);
