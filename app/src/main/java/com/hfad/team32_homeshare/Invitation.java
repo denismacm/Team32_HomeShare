@@ -5,6 +5,7 @@ import java.util.Map;
 public class Invitation {
     public String invitationID;
     public String homeID;
+    public String ownerID;
     public String date;
     public int numRoommatesCapacity;
     public int numSpotsLeft;

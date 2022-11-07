@@ -38,7 +38,7 @@
             android:textSize="12sp" />
 
         <TextView
-            android:id="@+id/email"
+            android:id="@+id/date"
             android:layout_width="236dp"
             android:layout_height="wrap_content"
             android:textColor="@color/black"

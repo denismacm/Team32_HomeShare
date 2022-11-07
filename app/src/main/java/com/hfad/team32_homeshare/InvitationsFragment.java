@@ -208,13 +208,13 @@ public class InvitationsFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                 if (task.isSuccessful()) {
-
                     for (QueryDocumentSnapshot document : task.getResult()) {
 //                        Map<String, Object> map = document.getData();
 //                        textView.setText(document.get("date").toString());
 //                        DocumentReference ref = document.getDocumentReference("owner");
 //                        DocumentSnapshot doc = ref.get().getResult();
                         String ownerID = document.get("ownerID").toString();
+                        String invID = document.getId();
                         db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -223,6 +223,8 @@ public class InvitationsFragment extends Fragment {
                                     String fullName = doc.get("fullName").toString();
                                     Invitation inv = new Invitation();
                                     inv.fullName = fullName;
+                                    inv.invitationID = invID;
+                                    inv.ownerID = ownerID;
                                     inv.date = document.get("date").toString();
                                     inv.home = (Map<String, Object>) document.get("home");
                                     inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
