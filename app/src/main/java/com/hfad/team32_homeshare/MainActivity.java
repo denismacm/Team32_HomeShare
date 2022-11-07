@@ -43,7 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
     private Spinner spin;
+    private Spinner daySpin;
+    private Spinner monthSpin;
+    private Spinner yearSpin;
     private String[] homeType = new String[]{"Apartment", "Condo", "Studio", "Townhouse"};
+    private String[] days = new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"};
+    private String[] months= new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
+    private String[] years = new String[]{"2022", "2023", "2024", "2025", "2026"};
     private EditText editText;
     private FirebaseAuth firebaseAuth;
 
@@ -68,7 +74,46 @@ public class MainActivity extends AppCompatActivity {
 
                 //
                 spin = popupView.findViewById(R.id.homeTypeSpinner);
+                daySpin = popupView.findViewById(R.id.daySpinner);
+                monthSpin = popupView.findViewById(R.id.monthSpinner);
+                yearSpin = popupView.findViewById(R.id.yearSpinner);
                 spin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+//                String text = adapterView.getItemAtPosition(position).toString();
+//                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+                    }
+                    //
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+                daySpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+//                String text = adapterView.getItemAtPosition(position).toString();
+//                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+                    }
+                    //
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+                monthSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+//                String text = adapterView.getItemAtPosition(position).toString();
+//                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+                    }
+                    //
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+                yearSpin.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 //                String text = adapterView.getItemAtPosition(position).toString();
@@ -82,8 +127,20 @@ public class MainActivity extends AppCompatActivity {
                 });
                 ArrayAdapter ad
                         = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, homeType);
+                ArrayAdapter dayAd
+                        = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, days);
+                ArrayAdapter monthAd
+                        = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, months);
+                ArrayAdapter yearAd
+                        = new ArrayAdapter(MainActivity.this, android.R.layout.simple_spinner_item, years);
                 ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                dayAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                monthAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                yearAd.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spin.setAdapter(ad);
+                daySpin.setAdapter(dayAd);
+                monthSpin.setAdapter(monthAd);
+                yearSpin.setAdapter(yearAd);
 
                 CheckBox cb = popupView.findViewById(R.id.checkboxPrice);
                 cb.setOnClickListener(new View.OnClickListener() {
@@ -124,8 +181,8 @@ public class MainActivity extends AppCompatActivity {
                 });
 
                 // create the popup window
-                int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-                int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+                int width = LinearLayout.LayoutParams.MATCH_PARENT;
+                int height = LinearLayout.LayoutParams.MATCH_PARENT;
                 boolean focusable = true; // lets taps outside the popup also dismiss it
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
                 // show the popup window

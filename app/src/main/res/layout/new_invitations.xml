@@ -2,22 +2,23 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#90000000">
     <RelativeLayout
         android:layout_width="370dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
+        android:layout_gravity="center"
         android:padding="30dp"
-        android:background="#BBBBBB">
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize= "24sp"
             android:text="@string/post"
             android:textAlignment="center"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textSize="24sp" />
 
         <Spinner
             android:id="@+id/homeTypeSpinner"
@@ -61,30 +62,68 @@
                 android:hint="@string/bath_num"
                 android:inputType="number"/>
         </com.google.android.material.textfield.TextInputLayout>
-
-        <!--Day-->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dateTil"
+        <LinearLayout
+            android:id="@+id/deadline"
             android:layout_width="match_parent"
-            android:layout_below="@id/bathTil"
-            android:layout_marginTop="10dp"
-            android:layout_centerInParent="true"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/date"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/bathTil">
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:autofillHints="00/00/00"
-                android:hint="@string/deadline"
-                android:inputType="datetime"/>
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="10dp"
+                android:text="@string/deadlineTitle"
+                android:textAlignment="center"
+                android:textSize="18dp"
+                android:textColor="@color/black" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Spinner
+                    android:id="@+id/monthSpinner"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:spinnerMode="dialog" />
+                <Spinner
+                    android:id="@+id/daySpinner"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:spinnerMode="dialog" />
+                <Spinner
+                    android:id="@+id/yearSpinner"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:spinnerMode="dialog" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+        <!--Day-->
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/dateTil"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_below="@id/bathTil"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_centerInParent="true"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/date"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:autofillHints="00/00/00"-->
+<!--                android:hint="@string/deadline"-->
+<!--                android:inputType="datetime"/>-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <CheckBox
             android:id="@+id/checkboxPrice"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:layout_below="@id/dateTil"
+            android:layout_below="@id/deadline"
             android:text="@string/set_range_for_price"
             android:checked="true"/>
 
@@ -188,9 +227,6 @@
             android:layout_below="@id/requirementTil"
             android:layout_centerInParent="true"
             android:text="@string/submit"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"/>
-
-
+            android:layout_marginTop="10dp" />
     </RelativeLayout>
 </ScrollView>

@@ -53,4 +53,5 @@
     <string name="bath_num">Bathroom Number</string>
     <string name="bed_num">Bedroom Number</string>
     <string name="submit">Submit</string>
+    <string name="deadlineTitle">Deadline</string>
 </resources>
