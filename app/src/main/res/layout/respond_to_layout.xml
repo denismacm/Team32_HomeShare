@@ -33,7 +33,7 @@
             android:layout_height="50dp"
             android:layout_gravity="right"
             android:textSize="10dp"
-            android:text="Accept Invitation"
+            android:text="Accept Response"
             android:textColor="@color/black"
             android:backgroundTint="@color/white"
             />

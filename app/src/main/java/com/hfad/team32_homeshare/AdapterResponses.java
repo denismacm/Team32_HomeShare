@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -13,9 +14,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
 
 public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHolder> {
 
@@ -40,9 +52,13 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
     public void onBindViewHolder(@NonNull MyHolder holder, int i) {
         Response res = responseList.get(i);
         String userName = res.senderName;
+        String currentUser = res.senderID;
+        String recipient = res.recipientID;
+        String responseID = UUID.randomUUID().toString();
         String address = res.address;
         String datePosted = res.date;
         String message = res.message;
+        String invID = res.invID;
         holder.nameTv.setText(userName);
         holder.dateTv.setText(datePosted);
 
@@ -92,20 +108,63 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                 boolean focusable = true;
                 final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
                 popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                popupView.findViewById(R.id.submitMessage).setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+                         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                         final EditText edit =  (EditText) popupView.findViewById(R.id.inviteEt);
+                         String getMessage = edit.getText().toString();
+                         String currentDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
+
+                         FirebaseFirestore db = FirebaseFirestore.getInstance();
+                         db.collection("users").document(recipient).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                             @Override
+                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                 if (task.isSuccessful()) {
+                                     DocumentSnapshot documentSnapshot = task.getResult();
+                                     ArrayList<String> invitesIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
+                                     invitesIDArray.add(responseID);
+                                     db.collection("users").document(recipient).update("responsesList", invitesIDArray);
+
+                                     Map<String, String> responseMap = new HashMap<>();
+                                     responseMap.put("date", currentDate);
+                                     responseMap.put("invitationID", invID);
+                                     responseMap.put("message", getMessage);
+                                     responseMap.put("recipientID", recipient);
+                                     responseMap.put("senderID", currentUser);
+
+                                     db.collection("responses").document(responseID).set(responseMap);
+                                     popupWindow.dismiss();
+                                 }
+                             }
+                         });
+                     }
+                });
             }
         });
 
-//        holder.noButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//            }
-//        });
+        holder.noButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-//       holder.sendButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//            }
-//       });
+                db.collection("users").document(currentUser).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot documentSnapshot = task.getResult();
+                            ArrayList<String> responsesIDArray = (ArrayList<String>) documentSnapshot.get("responsesList");
+
+                            responsesIDArray.remove(responseID);
+
+                            db.collection("users").document(currentUser).update("responsesList", responsesIDArray);
+                        }
+                    }
+                });
+            }
+        });
     }
 
 
