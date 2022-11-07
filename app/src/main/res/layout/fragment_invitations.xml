@@ -13,13 +13,13 @@
         android:layout_gravity="top"
         android:singleLine="true"
         android:drawableStart="@android:drawable/ic_menu_search"
-        android:hint="Search for Responses" />
+        android:hint="Search for Invitations" />
 
     <Button
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:id="@+id/submitBtn"
+        android:id="@+id/searchBtn"
         android:background="@drawable/ic_baseline_search_24"
         android:layout_marginRight="60dp"/>
 
@@ -40,11 +40,17 @@
         android:spinnerMode="dropdown" />
 
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:id="@+id/randomText"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/invite_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp">
+        android:layout_marginTop="60dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 </FrameLayout>
