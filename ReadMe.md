@@ -1,7 +1,7 @@
 # HomeShare README
 
 ## Creating Virtual Emulator
-To run our app, you must first create an emulator by selecting menu “Tools => Device Manager” and choosing “Pixel 2.”
+To run our app, you must first create an emulator by selecting menu “Tools => Device Manager” and choose “Pixel 2.”
 Once you click "Pixel 2," you must choose “Nougat API 24 Android 7.0 x86” when told to "Select a System Image."
 Now your emulator is set up and you can run the app on your AVD by  clicking “Run ‘app’” command from the “Run” menu.
 
@@ -25,9 +25,9 @@ Now that you have completed creating an account and profile, you will be directe
 On the invitations page, you can see a list of invitations you have received as well as the invitations you have sent.
 You will also have the freedom to be able to create more invitations to send others as well as edit invitations you may have sent. \
 Some features of invitations page are: \
-&emsp; &emsp;1. Clicking on any part of a invitation card except for the buttons will create a popup to show you more information about an invitation that was sent to &emsp;&emsp;&emsp; you. \
-&emsp; &emsp;2. Clicking on the message button on the invitation card will create a popup, allowing you to message and response the user who invited you, indicating that &emsp; &emsp;&emsp;you have accepted their invitation. This will remove all other invitations from your invitations page, except for the ones you have created. \
-&emsp; &emsp;3. Clicking on the remove button on an invitation card will remove that invitation off your list of invites, indicating that you have rejected the invitation. If you &emsp;&emsp;&emsp; move to another page and come back, the invitation that you rejected will no longer be there. \
+&emsp; &emsp;1. Clicking on any part of a invitation card except for the buttons will create a popup to show you more information about an invitation that was sent to you. \
+&emsp; &emsp;2. Clicking on the message button on the invitation card will create a popup, allowing you to message and response the user who invited you, indicating that you have accepted their invitation. This will remove all other invitations from your invitations page, except for the ones you have created. \
+&emsp; &emsp;3. Clicking on the remove button on an invitation card will remove that invitation off your list of invites, indicating that you have rejected the invitation. If you move to another page and come back, the invitation that you rejected will no longer be there. \
 &emsp; &emsp;4. You can also filter through your list of invites using the two dropdowns above which allow you to: \
 &emsp;&emsp;&emsp; &emsp;1. Sort by Name, Gender, Class Standing, Distance in miles, Number of Bedrooms, Number of Bathrooms, Price, and Maximum Number of Roommates. \
 &emsp;&emsp;&emsp; &emsp;2. Sort the above in ascending and descending order. \
@@ -36,8 +36,8 @@ Some features of invitations page are: \
 ## Responses Page Directions
 On the Nav-Bar, if you click on the responses tab, you will be directed to the responses page where you can see responses you have recieved from your invitations that you sent out. \
 Some features of responses page are: \
-&emsp; &emsp;1. Clicking on any part of the responses card except for the buttons will create a popup to show you more information about a response that was sent to &emsp;&emsp;&emsp; you. \
-&emsp; &emsp;2. Clicking on the message button on a response card will create a popup, allowing you to message back the user that you sent an invite to. This will then &emsp; &emsp;&emsp;remove the response from your response feed if you leave the response page and come back to it. \
+&emsp; &emsp;1. Clicking on any part of the responses card except for the buttons will create a popup to show you more information about a response that was sent to you. \
+&emsp; &emsp;2. Clicking on the message button on a response card will create a popup, allowing you to message back the user that you sent an invite to. This will then remove the response from your response feed if you leave the response page and come back to it. \
 &emsp; &emsp;3. Clicking on the remove button on a response card will remove that response off your list of responses, indicating that you no longer have interest in living with the person you invited. \
 &emsp; &emsp;4. You can also filter through your list of responses using the two dropdowns above which allow you to: \
 &emsp; &emsp;&emsp; &emsp;1. Sort by Name and Gender. \
