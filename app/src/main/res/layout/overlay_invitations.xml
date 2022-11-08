@@ -1,17 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#FFFFFF">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#90000000">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:background="@color/white"
+        android:layout_marginTop="20dp"
+        android:padding="30dp">
         <TextView
+            android:id="@+id/detailTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/invitation_details"
+            android:textAlignment="center"
+            android:textSize= "24sp"
+            android:layout_marginBottom="5dp"
+            />
+        <TextView
+            android:layout_marginVertical="5dp"
             android:id="@+id/nameOL"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,53 +31,75 @@
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/datePostedOL"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/locationOL"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/bbQuantityOL"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/deadlineOL"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/homeTypeOL"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/priceOL"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/numCapacityOL"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <TextView
             android:id="@+id/numSpotsOL"
+            android:layout_marginVertical="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize= "18sp"
             android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/expectationOL"
+            android:layout_marginVertical="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize= "18sp"
+            android:textColor="@color/black" />
+        <Button
+            android:id="@+id/dismiss"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/dismiss"
+            android:layout_marginTop="10dp" />
     </LinearLayout>
 
 
-</RelativeLayout>
+</ScrollView>

@@ -7,12 +7,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +29,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Locale;
 import java.util.Map;
 
 public class ResponsesFragment extends Fragment {
@@ -72,6 +79,26 @@ public class ResponsesFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 String text = adapterView.getItemAtPosition(position).toString();
 //                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
+                String qu = spin.getSelectedItem().toString();
+                if (position == 0) {
+                    if (qu.equals("Gender")) {
+                        Collections.sort(responsesList, Comparator.comparing(Response::getSenderGender));
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Collections.sort(responsesList, Comparator.comparing(Response::getSenderName));
+                        adapter.notifyDataSetChanged();
+                    }
+                } else {
+                    if (qu.equals("Gender")) {
+                        Collections.sort(responsesList, Comparator.comparing(Response::getSenderGender));
+                        Collections.reverse(responsesList);
+                        adapter.notifyDataSetChanged();
+                    } else {
+                        Collections.sort(responsesList, Comparator.comparing(Response::getSenderName));
+                        Collections.reverse(responsesList);
+                        adapter.notifyDataSetChanged();
+                    }
+                }
             }
 
             @Override
@@ -97,6 +124,52 @@ public class ResponsesFragment extends Fragment {
         spin.setAdapter(ad);
         spinTwo.setAdapter(adTwo);
 
+        Button queryBtn = (Button) view.findViewById(R.id.queryBtn);
+        EditText searchText = (EditText) view.findViewById(R.id.searchResponse);
+        queryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String text = searchText.getText().toString().trim().toLowerCase();
+                String query = spin.getSelectedItem().toString();
+                if (query.equals("Name")) {
+//                    CreateDataForCards(view);
+                    ArrayList<Response> toRemove = new ArrayList<>();
+                    for (Response _res : responsesList) {
+                        if (!_res.senderName.toLowerCase().contains(text)) {
+                            toRemove.add(_res);
+                        }
+                    }
+                    for (Response _res : toRemove) {
+                        responsesList.remove(_res);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+//                    CreateDataForCards(view);
+                    ArrayList<Response> toRemove = new ArrayList<>();
+                    for (Response _res : responsesList) {
+                        if (!_res.senderGender.contains(text)) {
+                            toRemove.add(_res);
+                        }
+                    }
+                    for (Response _res : toRemove) {
+                        responsesList.remove(_res);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayoutResponses);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                responsesList.clear();
+                CreateDataForCards(view);
+            }
+        });
+
         return view;
     }
 
@@ -115,13 +188,14 @@ public class ResponsesFragment extends Fragment {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String uid = firebaseAuth.getCurrentUser().getUid();
-//        TextView tv = view.findViewById(R.id.rando);
+        TextView tv = view.findViewById(R.id.rando);
         db.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
              @Override
              public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                  if (task.isSuccessful()) {
                      DocumentSnapshot documentSnapshot = task.getResult();
                      ArrayList<String> respon = (ArrayList<String>) documentSnapshot.get("responsesList");
+
                      for (String res : respon) {
                          db.collection("responses").document(res).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                              @Override
@@ -134,6 +208,7 @@ public class ResponsesFragment extends Fragment {
                                      String datePosted = doc.get("date").toString();
                                      String responseID = doc.getId();
                                      String recipientID = doc.get("recipientID").toString();
+                                     Boolean accepted = (Boolean) doc.get("accepted");
                                      db.collection("invitations").document(invitationID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                          @Override
                                          public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -152,12 +227,14 @@ public class ResponsesFragment extends Fragment {
                                                              r.date = datePosted;
                                                              r.message = message;
                                                              r.senderName = senderName;
+//                                                             tv.setText(senderName);
                                                              r.address = location;
                                                              r.senderGender = senderGender;
                                                              r.senderID = senderID;
                                                              r.recipientID = recipientID;
                                                              r.responseID = responseID;
                                                              r.invID = invitationID;
+                                                             r.accepted = accepted;
                                                              responsesList.add(r);
                                                              adapter.notifyDataSetChanged();
                                                          }

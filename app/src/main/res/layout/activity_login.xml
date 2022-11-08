@@ -26,6 +26,13 @@
         style="@style/TextAppearance.MaterialComponents.Caption"
     />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/logo"
+        android:layout_gravity="center"
+        android:layout_marginTop="80dp"
+        app:tint="@color/green" />
     <!--Email-->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailTil"

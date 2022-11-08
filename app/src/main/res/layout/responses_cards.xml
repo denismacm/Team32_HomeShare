@@ -30,6 +30,15 @@
             android:textSize="12sp" />
 
         <Button
+            android:id="@+id/messageSendBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="250dp"
+            android:background="@drawable/ic_message"
+            android:visibility="gone"
+            android:textSize="12sp" />
+
+        <Button
             android:id="@+id/noResponse"
             android:layout_width="50dp"
             android:layout_height="50dp"

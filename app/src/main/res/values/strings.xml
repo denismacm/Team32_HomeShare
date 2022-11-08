@@ -28,18 +28,18 @@
     <string name="login_to_your_existing_account">Login to your existing account.</string>
     <string name="forgot_password">Forgot password? <b>Click here.</b></string>
     <string-array name="class_array">
-        <item>Freshman</item>
-        <item>Sophomore</item>
-        <item>Junior</item>
-        <item>Senior</item>
-        <item>Masters</item>
-        <item>Doctorate</item>
-        <item>Faculty/Staff</item>
+        <item>freshman</item>
+        <item>sophomore</item>
+        <item>junior</item>
+        <item>senior</item>
+        <item>masters</item>
+        <item>doctorate</item>
+        <item>employee</item>
     </string-array>
     <string-array name="gender_array">
-        <item>Male</item>
-        <item>Female</item>
-        <item>Non-binary</item>
+        <item>male</item>
+        <item>female</item>
+        <item>non-binary</item>
     </string-array>
     <string name="home_type">Home Type</string>
     <string name="descrip">Your expectation for roommate</string>
@@ -53,4 +53,8 @@
     <string name="bath_num">Bathroom Number</string>
     <string name="bed_num">Bedroom Number</string>
     <string name="submit">Submit</string>
+    <string name="spots">Number of Spots Left</string>
+    <string name="roommate">Roommates Capacity</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="invitation_details">Invitation Details</string>
 </resources>
