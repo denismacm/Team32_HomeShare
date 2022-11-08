@@ -49,10 +49,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.hfad.team32_homeshare.databinding.ActivitySettingsBinding;
 
 public class SettingsFragment extends Fragment {
-    private ActivitySettingsBinding binding;
     private ActionBar actionBar;
     private FirebaseAuth firebaseAuth;
 

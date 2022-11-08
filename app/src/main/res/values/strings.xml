@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Team32_HomeShare</string>
+    <string name="app_name">HomeShare</string>
     <string name="invitations">📩</string>
     <string name="settings">⚙</string>
     <string name="responses">Responses</string>

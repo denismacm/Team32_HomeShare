@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#90000000">
@@ -21,6 +22,13 @@
             android:textAlignment="center"
             android:textSize= "24sp"
             android:layout_marginBottom="5dp"
+            />
+        <ImageView
+            android:id="@+id/profilePicOL"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:layout_marginBottom="10dp"
+            tools:srcCompat="@tools:sample/avatars"
             />
         <TextView
             android:layout_marginVertical="5dp"

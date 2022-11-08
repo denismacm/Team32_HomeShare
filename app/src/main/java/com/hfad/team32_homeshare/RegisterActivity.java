@@ -136,6 +136,10 @@ public class RegisterActivity extends AppCompatActivity {
                         user.put("fullName", fullName);
                         user.put("phone", phone);
                         user.put("email", email);
+                        user.put("gender", "non-binary");
+                        user.put("classStanding", "freshman");
+                        user.put("classStandingNum", 1);
+                        user.put("biography", "");
                         user.put("fullNameLower", fullName.toLowerCase());
                         ArrayList<String> declinedIDs = new ArrayList<>();
                         user.put("declinedInvitationsList", declinedIDs);

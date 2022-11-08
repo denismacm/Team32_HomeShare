@@ -132,7 +132,6 @@ public class ResponsesFragment extends Fragment {
                 String text = searchText.getText().toString().trim().toLowerCase();
                 String query = spin.getSelectedItem().toString();
                 if (query.equals("Name")) {
-//                    CreateDataForCards(view);
                     ArrayList<Response> toRemove = new ArrayList<>();
                     for (Response _res : responsesList) {
                         if (!_res.senderName.toLowerCase().contains(text)) {
@@ -145,7 +144,6 @@ public class ResponsesFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 }
                 else {
-//                    CreateDataForCards(view);
                     ArrayList<Response> toRemove = new ArrayList<>();
                     for (Response _res : responsesList) {
                         if (!_res.senderGender.contains(text)) {
