@@ -57,4 +57,4 @@ On the settings page, there are four things that you can do: \
 ## Disclaimer
 The "@" symbol and "shift" key do not operate on your physical keyboard to the emulator. Therefore, it is recommended that you use the virtual keyboard on the emulator.
 The preferred image type for your profile is PNG. Big image files are not recommended to use as it may crash the app on the client-side.\
-If needed, our team can invite you to our private Github repository.
+If needed, our team can invite you to our private Github repository and our FireStore database.
