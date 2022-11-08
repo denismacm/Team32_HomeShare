@@ -25,6 +25,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -46,6 +47,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.hfad.team32_homeshare.databinding.ActivitySettingsBinding;
 
 public class SettingsFragment extends Fragment {
@@ -106,6 +109,27 @@ public class SettingsFragment extends Fragment {
                 firebaseAuth.signOut();
                 gsc.signOut();
                 checkUser();
+            }
+        });
+
+        Button recoverBtn = (Button) view.findViewById(R.id.recoverDeclinedInv);
+        recoverBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String currentUserID = firebaseAuth.getCurrentUser().getUid();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+                db.collection("users").document(currentUserID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot ds = task.getResult();
+                            ArrayList<String> invIDs = (ArrayList<String>) ds.getData().get("declinedInvitationsList");
+                            invIDs.clear();
+                            db.collection("users").document(currentUserID).update("declinedInvitationsList", invIDs);
+                        }
+                    }
+                });
             }
         });
 

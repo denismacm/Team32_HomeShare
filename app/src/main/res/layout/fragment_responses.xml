@@ -7,11 +7,19 @@
     tools:context=".InvitationsFragment">
     <EditText
         android:id="@+id/searchResponse"
-        android:layout_width="300dp"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:drawableStart="@android:drawable/ic_menu_search"
         android:hint="Filter responses by..." />
+
+    <Button
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:id="@+id/queryBtn"
+        android:background="@drawable/ic_baseline_search_24"
+        android:layout_marginRight="115dp"/>
 
     <Spinner
         android:id="@+id/responsesFilter"
@@ -36,11 +44,17 @@
         android:id="@+id/rando"
         />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/response_1"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayoutResponses"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
         android:layout_marginTop="60dp">
-
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/response_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp">
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

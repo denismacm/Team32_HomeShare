@@ -60,7 +60,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item){
 //        Intent myIntent = new Intent(getApplicationContext(), MyActivity.class);
-        startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         return true;
     }
 

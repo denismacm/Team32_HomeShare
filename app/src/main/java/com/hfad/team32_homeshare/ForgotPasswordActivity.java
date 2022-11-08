@@ -94,7 +94,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if (firebaseUser != null) {
             // user is already logged in
-            startActivity(new Intent(ForgotPasswordActivity.this, ProfileActivity.class));
+            startActivity(new Intent(ForgotPasswordActivity.this, MainActivity.class));
             finish();
         }
 
