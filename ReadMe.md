@@ -6,7 +6,7 @@ Once you click "Pixel 2," you must choose “Nougat API 24 Android 7.0 x86” wh
 Now your emulator is set up and you can run the app on your AVD by  clicking “Run ‘app’” command from the “Run” menu.
 
 ## Using HomeShare
-Before running our app for the first time, press "Files => Sync Project with Gradle Files"
+Before running our app for the first time, press "Files => Sync Project with Gradle Files" to remove any warnings.
 Now that our app is running on your virtual emulator, you must first create an account using your name and email.
 You can also login with Google to use our application.
 Also, if you create an account without logging in through Google and log in with Google the next time, our app will
@@ -56,4 +56,5 @@ On the settings page, there are four things that you can do: \
 
 ## Disclaimer
 The "@" symbol and "shift" key do not operate on your physical keyboard to the emulator. Therefore, it is recommended that you use the virtual keyboard on the emulator.
-The preferred image type for your profile is PNG. Big image files are not recommended to use as it may crash the app on the client-side.
+The preferred image type for your profile is PNG. Big image files are not recommended to use as it may crash the app on the client-side.\
+If needed, our team can invite you to our private Github repository.
