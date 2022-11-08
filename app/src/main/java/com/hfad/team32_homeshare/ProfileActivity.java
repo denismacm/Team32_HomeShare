@@ -250,6 +250,14 @@ public class ProfileActivity extends AppCompatActivity {
                                     });
                                 } else {
                                     Map<String, Object> user = new HashMap<>();
+                                    user.put("fullName", "");
+                                    user.put("phone", "");
+                                    user.put("email", firebaseUser.getEmail());
+                                    user.put("gender", "non-binary");
+                                    user.put("classStanding", "freshman");
+                                    user.put("classStandingNum", 1);
+                                    user.put("biography", "");
+                                    user.put("fullNameLower", "");
                                     db.collection("users").document(firebaseUser.getUid()).set(user);
                                     ArrayList<String> declinedIDs = new ArrayList<>();
                                     ArrayList<String> responsesList = new ArrayList<>();

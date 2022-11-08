@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.text.Html;
 import android.content.DialogInterface;
@@ -19,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
@@ -36,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
@@ -47,6 +51,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.w3c.dom.Document;
 
@@ -160,6 +166,16 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 ((TextView)popupWindow.getContentView().findViewById(R.id.homeTypeOL)).setText(Html.fromHtml(homeType));
                 String description = "<b>Roommate Expectations: </b><br>" + expectation;
                 ((TextView)popupWindow.getContentView().findViewById(R.id.expectationOL)).setText(Html.fromHtml(description));
+                ImageView img = (ImageView) popupWindow.getContentView().findViewById(R.id.profilePicOL);
+                StorageReference pathReference = FirebaseStorage.getInstance().getReference().child("images/" + inv.ownerID);
+                long MAX_BYTES = 1024 * 1024 * 10;
+                pathReference.getBytes(MAX_BYTES).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        img.setImageBitmap(bitmap);
+                    }
+                });
                 String price = "";
                 if (userPriceRange) {
                     price = "<b>Min Price: </b>" + home.get("minPrice");
@@ -193,6 +209,9 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         holder.messageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(inv.ownerID)) {
+                    return;
+                }
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View popupView = inflater.inflate(R.layout.create_invite_layout, null);
                 // create the popup window
@@ -247,6 +266,9 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(inv.ownerID)) {
+                    return;
+                }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setCancelable(true);
                 builder.setTitle("Are you sure you want to hide this invitation for " + location + "?");
@@ -286,6 +308,9 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         holder.editInv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(inv.ownerID)) {
+                    return;
+                }
                 LayoutInflater li = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 @SuppressLint("InflateParams") View popupView = li.inflate(R.layout.new_invitations, null);
 
@@ -637,6 +662,9 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         holder.trashInv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!FirebaseAuth.getInstance().getCurrentUser().getUid().equals(inv.ownerID)) {
+                    return;
+                }
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setCancelable(true);
                 builder.setTitle("Are you sure you want to delete this invitation for " + location + "?");
