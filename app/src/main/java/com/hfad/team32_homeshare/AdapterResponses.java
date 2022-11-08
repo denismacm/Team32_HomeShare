@@ -65,6 +65,7 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
         Response res = responseList.get(i);
         String userName = res.senderName;
         String senderID = res.senderID;
+        String gender = res.senderGender;
 //        String currentUser = res.senderID;
 //        String recipient = res.recipientID;
         String responseID = res.responseID;
@@ -102,12 +103,14 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                 ((TextView)popupWindow.getContentView().findViewById(R.id.detailTitle)).setText(Html.fromHtml(title));
                 String name = "<b>Name: </b>" + userName;
                 ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(Html.fromHtml(name));
+                String gen = "<b>Gender: </b>" + gender;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.genderOL)).setText(Html.fromHtml(gen));
                 String location = "<b>Address: </b>" + address;
                 ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(Html.fromHtml(location));
                 String date = "<b>Date posted: </b>" + datePosted;
                 ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(Html.fromHtml(date));
                 String description = "<b>Message: </b>" + message;
-                ((TextView)popupWindow.getContentView().findViewById(R.id.bbQuantityOL)).setText(Html.fromHtml(description));
+                ((TextView)popupWindow.getContentView().findViewById(R.id.distanceOL)).setText(Html.fromHtml(description));
                 ImageView img = (ImageView) popupWindow.getContentView().findViewById(R.id.profilePicOL);
                 StorageReference pathReference = FirebaseStorage.getInstance().getReference().child("images/" + res.senderID);
                 long MAX_BYTES = 1024 * 1024 * 10;

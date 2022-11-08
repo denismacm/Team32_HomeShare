@@ -104,6 +104,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
 
         Invitation inv = invitationList.get(i);
         String fullName = inv.fullName;
+        String gender = inv.ownerGender;
         String datePosted = inv.date;
         String invitationID = inv.invitationID;
         if (inv.ownerID.equals(currentUserID)) {
@@ -154,8 +155,13 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 ((TextView)popupWindow.getContentView().findViewById(R.id.detailTitle)).setText(Html.fromHtml(title));
                 String name = "<b>Name: </b>" + fullName;
                 ((TextView)popupWindow.getContentView().findViewById(R.id.nameOL)).setText(Html.fromHtml(name));
+                String gen = "<b>Gender: </b>" + gender;
+                ((TextView)popupWindow.getContentView().findViewById(R.id.genderOL)).setText(Html.fromHtml(gen));
                 String address = "<b>Address: </b>" + location;
                 ((TextView)popupWindow.getContentView().findViewById(R.id.locationOL)).setText(Html.fromHtml(address));
+                Float distFloat = Float.parseFloat(home.get("distanceFromCampus").toString());
+                String distance = "<b>Distance from Campus: </b><br>" + String.format("%.2f", distFloat) + " miles";
+                ((TextView)popupWindow.getContentView().findViewById(R.id.distanceOL)).setText(Html.fromHtml(distance));
                 String date = "<b>Date posted: </b>" + datePosted;
                 ((TextView)popupWindow.getContentView().findViewById(R.id.datePostedOL)).setText(Html.fromHtml(date));
                 String bbQuantity = "<b>Bed/Bath: </b>" + home.get("bbQuantity").toString();

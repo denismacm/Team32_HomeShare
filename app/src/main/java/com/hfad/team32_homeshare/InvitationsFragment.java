@@ -64,7 +64,7 @@ public class InvitationsFragment extends Fragment {
         InitializeCardView(view);
 //        updateDeclinedInvitations();
         EditText et = view.findViewById(R.id.searchInvite);
-        TextView textView = view.findViewById(R.id.randomText);
+//        TextView textView = view.findViewById(R.id.randomText);
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Take the instance of Spinner and
         // apply OnItemSelectedListener on it which
@@ -225,7 +225,7 @@ public class InvitationsFragment extends Fragment {
                                     String fullName = user.get("fullName").toString();
                                     String ownerGender = user.get("gender").toString();
                                     int ownerClassStandingNum = Integer.parseInt(user.get("classStandingNum").toString());
-                                    textView.setText(fullName);
+//                                    textView.setText(fullName);
                                     db.collection("invitations").whereEqualTo("ownerID",ownerID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -266,7 +266,7 @@ public class InvitationsFragment extends Fragment {
                                     String fullName = user.get("fullName").toString();
                                     String ownerGender = user.get("gender").toString();
                                     int ownerClassStandingNum = Integer.parseInt(user.get("classStandingNum").toString());
-                                    textView.setText(fullName);
+//                                    textView.setText(fullName);
                                     db.collection("invitations").whereEqualTo("ownerID",ownerID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -306,7 +306,7 @@ public class InvitationsFragment extends Fragment {
                                     String fullName = user.get("fullName").toString();
                                     String ownerGender = user.get("gender").toString();
                                     int ownerClassStandingNum = Integer.parseInt(user.get("classStandingNum").toString());
-                                    textView.setText(fullName);
+//                                    textView.setText(fullName);
                                     db.collection("invitations").whereEqualTo("ownerID",ownerID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -648,7 +648,7 @@ public class InvitationsFragment extends Fragment {
     }
 
     private void CreateDataForCards(View view) {
-        TextView textView = view.findViewById(R.id.randomText);
+//        TextView textView = view.findViewById(R.id.randomText);
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         updateDeclinedInvitations();
