@@ -295,24 +295,24 @@ public class MainActivity extends AppCompatActivity {
                         int roommateNum =  Integer.parseInt(roommateSpin.getSelectedItem().toString());
                         int spotNum = Integer.parseInt(spotSpin.getSelectedItem().toString());
                         String address = editText.getText().toString();
+                        if (address.isEmpty()) {
+                            editText.setError("Address cannot be empty.");
+                            return;
+                        }
 
                         if (cb.isChecked()) {
-                            EditText minPriceEt = (EditText) popupView.findViewById(R.id.minPriceEt);
-                            EditText maxPriceEt = (EditText) popupView.findViewById(R.id.maxPriceEt);
-                            int minPrice;
-                            try {
-                                minPrice = Integer.parseInt(minPriceEt.getText().toString());
-                            } catch (Exception e) {
-                                minPriceEt.setError("Enter a valid number.");
+                            EditText minPriceEt = popupView.findViewById(R.id.minPriceEt);
+                            EditText maxPriceEt = popupView.findViewById(R.id.maxPriceEt);
+                            int minPrice, maxPrice;
+                            if (minPriceEt.getText().toString().equals("") || maxPriceEt.getText().toString().equals("")) {
                                 return;
+//                                minPriceEt.setError("Cannot be empty.");
                             }
-                            int maxPrice;
-                            try {
-                                maxPrice = Integer.parseInt(maxPriceEt.getText().toString());
-                            } catch (Exception e) {
-                                maxPriceEt.setError("Enter a valid number.");
-                                return;
-                            }
+//                            } else if (maxPriceEt.getText().toString().isEmpty()) {
+//                                maxPriceEt.setError("Cannot be empty.");
+//                            }
+                            minPrice = Integer.parseInt(minPriceEt.getText().toString());
+                            maxPrice = Integer.parseInt(maxPriceEt.getText().toString());
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -340,6 +340,8 @@ public class MainActivity extends AppCompatActivity {
                             home.put("userPriceRange", true);
                             home.put("minPrice", minPrice);
                             home.put("maxPrice", maxPrice);
+                            home.put("numBedrooms", bedNum);
+                            home.put("numBathrooms", bathNum);
                             home.put("distanceFromCampus", distanceFromCampus);
                             db.collection("invitations").document(invID).update("home", home);
                             db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -354,16 +356,13 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 }
                             });
-
                         } else {
                             EditText priceEt = (EditText) popupView.findViewById(R.id.price);
-                            int price;
-                            try {
-                                price = Integer.parseInt(priceEt.getText().toString());
-                            } catch (Exception e) {
-                                priceEt.setError("Enter a valid number.");
+                            if (priceEt.getText().toString().isEmpty()) {
+//                                priceEt.setError("Cannot be empty.");
                                 return;
                             }
+                            int price = Integer.parseInt(priceEt.getText().toString());
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
                             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -391,6 +390,8 @@ public class MainActivity extends AppCompatActivity {
                             home.put("userPriceRange", false);
                             home.put("onePrice", price);
                             home.put("maxPrice", price);
+                            home.put("numBedrooms", bedNum);
+                            home.put("numBathrooms", bathNum);
                             home.put("distanceFromCampus", distanceFromCampus);
                             db.collection("invitations").document(invID).update("home", home);
                             db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

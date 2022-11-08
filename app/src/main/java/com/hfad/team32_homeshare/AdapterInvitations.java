@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.location.Location;
 import android.text.Html;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,13 +31,16 @@ import java.util.Calendar;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.MyHolder> {
@@ -71,7 +76,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
     private String[] monthsArray= new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"};
     private String[] yearsArray = new String[]{"2022", "2023", "2024", "2025", "2026"};
     private EditText editText;
-    private float distanceFromCampus;
+//    private float distanceFromCampus;
 
     public AdapterInvitations(Context context, ArrayList<Invitation> invitationList) {
         this.context = context;
@@ -94,6 +99,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         Invitation inv = invitationList.get(i);
         String fullName = inv.fullName;
         String datePosted = inv.date;
+        String invitationID = inv.invitationID;
         if (inv.ownerID.equals(currentUserID)) {
             holder.messageButton.setVisibility(GONE);
             holder.deleteButton.setVisibility(GONE);
@@ -421,6 +427,29 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 roommateSpin.setAdapter(roommateAd);
                 spotSpin.setAdapter(spotAd);
 
+                spin.setSelection(getIndex(spin, home.get("homeType").toString()));
+                bedSpin.setSelection(getIndex(bedSpin, home.get("numBedrooms").toString()));
+                bathSpin.setSelection(getIndex(bathSpin, home.get("numBathrooms").toString()));
+                daySpin.setSelection(getIndex(daySpin, home.get("deadlineDay").toString()));
+                monthSpin.setSelection(getIndex(monthSpin, home.get("deadlineMonth").toString()));
+                yearSpin.setSelection(getIndex(yearSpin, home.get("deadlineYear").toString()));
+                roommateSpin.setSelection(getIndex(roommateSpin, String.valueOf(inv.numRoommatesCapacity)));
+                spotSpin.setSelection(getIndex(spotSpin, String.valueOf(inv.numSpotsLeft)));
+
+                if ((Boolean) inv.home.get("userPriceRange")) {
+                    EditText minPriceEt = (EditText) popupView.findViewById(R.id.minPriceEt);
+                    minPriceEt.setText(inv.home.get("minPrice").toString());
+                    EditText maxPriceEt = (EditText) popupView.findViewById(R.id.maxPriceEt);
+                    maxPriceEt.setText(inv.home.get("maxPrice").toString());
+                } else {
+                    EditText priceEt = (EditText) popupView.findViewById(R.id.price);
+                    priceEt.setText(inv.home.get("onePrice").toString());
+                }
+
+                EditText desc = (EditText) popupView.findViewById(R.id.requirementEt);
+                desc.setText(inv.expectation);
+
+
                 CheckBox cb = popupView.findViewById(R.id.checkboxPrice);
                 cb.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -448,16 +477,18 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                     }
                 });
                 editText = popupView.findViewById(R.id.address);
-                Places.initialize(context, "AIzaSyC6VpIx6wQUPFZiA_M40pa4sBJqCzSrzfI");
+                editText.setText(home.get("location").toString());
+//                Places.initialize(context, "AIzaSyC6VpIx6wQUPFZiA_M40pa4sBJqCzSrzfI");
                 editText.setFocusable(false);
-                editText.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-                        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(context);
-                        ((Activity) context).startActivityForResult(intent, 100);
-                    }
-                });
+                editText.setEnabled(false);
+//                editText.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+//                        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(context);
+//                        ((Activity) context).startActivityForResult(intent, 100);
+//                    }
+//                });
 
                 // create the popup window
                 int width = LinearLayout.LayoutParams.MATCH_PARENT;
@@ -477,128 +508,128 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                         String deadlineMonth = monthSpin.getSelectedItem().toString();
                         String deadlineDay = daySpin.getSelectedItem().toString();
                         String deadlineYear  = yearSpin.getSelectedItem().toString();
-                        EditText desc = (EditText) popupView.findViewById(R.id.requirementEt);
+//                        EditText desc = (EditText) popupView.findViewById(R.id.requirementEt);
                         String expectation = desc.getText().toString().trim();
                         String currentDate = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault()).format(new Date());
                         String [] dateArray = currentDate.split("/");
                         String dateMonth = dateArray[0];
                         String dateDay = dateArray[1];
                         String dateYear = dateArray[2];
+                        float distanceFromCampus = Float.parseFloat(home.get("distanceFromCampus").toString());
                         int roommateNum =  Integer.parseInt(roommateSpin.getSelectedItem().toString());
                         int spotNum = Integer.parseInt(spotSpin.getSelectedItem().toString());
                         String address = editText.getText().toString();
+                        if (address.isEmpty()) {
+                            editText.setError("Address cannot be empty.");
+                            return;
+                        }
 
                         if (cb.isChecked()) {
                             EditText minPriceEt = (EditText) popupView.findViewById(R.id.minPriceEt);
                             EditText maxPriceEt = (EditText) popupView.findViewById(R.id.maxPriceEt);
-                            int minPrice;
-                            try {
-                                minPrice = Integer.parseInt(minPriceEt.getText().toString());
-                            } catch (Exception e) {
-                                minPriceEt.setError("Enter a valid number.");
+                            int minPrice, maxPrice;
+                            if (minPriceEt.getText().toString().equals("") || maxPriceEt.getText().toString().equals("")) {
                                 return;
                             }
-                            int maxPrice;
-                            try {
-                                maxPrice = Integer.parseInt(maxPriceEt.getText().toString());
-                            } catch (Exception e) {
-                                maxPriceEt.setError("Enter a valid number.");
-                                return;
-                            }
+                            minPrice = Integer.parseInt(minPriceEt.getText().toString());
+                            maxPrice = Integer.parseInt(maxPriceEt.getText().toString());
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                            String invID = UUID.randomUUID().toString();
-                            Map<String, Object> map = new HashMap<>();
-                            map.put("active", true);
-                            db.collection("invitations").document(invID).set(map);
-                            db.collection("invitations").document(invID).update("date", currentDate);
-                            db.collection("invitations").document(invID).update("dateDay", dateDay);
-                            db.collection("invitations").document(invID).update("dateMonth", dateMonth);
-                            db.collection("invitations").document(invID).update("dateYear", dateYear);
-                            db.collection("invitations").document(invID).update("numRoommatesCapacity", roommateNum);
-                            db.collection("invitations").document(invID).update("numSpotsLeft", spotNum);
-                            db.collection("invitations").document(invID).update("ownerID", firebaseAuth.getCurrentUser().getUid());
-                            db.collection("invitations").document(invID).update("expectation", expectation);
+//                            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+//                            String invID = UUID.randomUUID().toString();
+//                            db.collection("invitations").document(invitationID).update("active", true);
+//                            db.collection("invitations").document(invitationID).update("date", currentDate);
+                            db.collection("invitations").document(invitationID).update("dateDay", dateDay);
+                            db.collection("invitations").document(invitationID).update("dateMonth", dateMonth);
+                            db.collection("invitations").document(invitationID).update("dateYear", dateYear);
+                            db.collection("invitations").document(invitationID).update("numRoommatesCapacity", roommateNum);
+                            db.collection("invitations").document(invitationID).update("numSpotsLeft", spotNum);
+//                            db.collection("invitations").document(invitationID).update("ownerID", firebaseAuth.getCurrentUser().getUid());
+                            db.collection("invitations").document(invitationID).update("expectation", expectation);
 
-                            Map<String, Object> home = new HashMap<>();
-                            home.put("bbQuantity", String.valueOf(bedNum) + "B" + String.valueOf(bathNum) + "B");
-                            home.put("deadline", deadlineMonth+"/"+deadlineDay+"/"+deadlineYear);
-                            home.put("deadlineDay", deadlineDay);
-                            home.put("deadlineMonth", deadlineMonth);
-                            home.put("deadlineYear", deadlineYear);
-                            home.put("homeType", homeType);
-                            home.put("location", address);
-                            home.put("userPriceRange", true);
-                            home.put("minPrice", minPrice);
-                            home.put("maxPrice", maxPrice);
-                            home.put("distanceFromCampus", distanceFromCampus);
-                            db.collection("invitations").document(invID).update("home", home);
-                            db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot ds = task.getResult();
-                                        ArrayList<String> invitationIDList = (ArrayList<String>) ds.get("invitationsList");
-                                        invitationIDList.add(invID);
-                                        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("invitationsList", invitationIDList);
-                                        popupWindow.dismiss();
-                                    }
-                                }
-                            });
+                            Map<String, Object> new_home = new HashMap<>();
+                            new_home.put("bbQuantity", String.valueOf(bedNum) + "B" + String.valueOf(bathNum) + "B");
+                            new_home.put("deadline", deadlineMonth+"/"+deadlineDay+"/"+deadlineYear);
+                            new_home.put("deadlineDay", deadlineDay);
+                            new_home.put("deadlineMonth", deadlineMonth);
+                            new_home.put("deadlineYear", deadlineYear);
+                            new_home.put("homeType", homeType);
+                            new_home.put("location", address);
+                            new_home.put("userPriceRange", true);
+                            new_home.put("minPrice", minPrice);
+                            new_home.put("maxPrice", maxPrice);
+                            new_home.put("numBedrooms", bedNum);
+                            new_home.put("numBathrooms", bathNum);
+                            new_home.put("distanceFromCampus", distanceFromCampus);
+                            db.collection("invitations").document(invitationID).update("home", new_home);
+//                            db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        DocumentSnapshot ds = task.getResult();
+//                                        ArrayList<String> invitationIDList = (ArrayList<String>) ds.get("invitationsList");
+//                                        invitationIDList.add(invitationID);
+//                                        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("invitationsList", invitationIDList);
+//                                        popupWindow.dismiss();
+//                                    }
+//                                }
+//                            });
+                            popupWindow.dismiss();
 
                         } else {
                             EditText priceEt = (EditText) popupView.findViewById(R.id.price);
                             int price;
-                            try {
-                                price = Integer.parseInt(priceEt.getText().toString());
-                            } catch (Exception e) {
-                                priceEt.setError("Enter a valid number.");
+                            if (priceEt.getText().toString().equals("")) {
                                 return;
                             }
+                            price = Integer.parseInt(priceEt.getText().toString());
 
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-                            String invID = UUID.randomUUID().toString();
+//                            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+//                            String invID = UUID.randomUUID().toString();
                             Map<String, Object> map = new HashMap<>();
                             map.put("active", true);
-                            db.collection("invitations").document(invID).set(map);
-                            db.collection("invitations").document(invID).update("date", currentDate);
-                            db.collection("invitations").document(invID).update("dateDay", dateDay);
-                            db.collection("invitations").document(invID).update("dateMonth", dateMonth);
-                            db.collection("invitations").document(invID).update("dateYear", dateYear);
-                            db.collection("invitations").document(invID).update("numRoommatesCapacity", roommateNum);
-                            db.collection("invitations").document(invID).update("numSpotsLeft", spotNum);
-                            db.collection("invitations").document(invID).update("ownerID", firebaseAuth.getCurrentUser().getUid());
-                            db.collection("invitations").document(invID).update("expectation", expectation);
+//                            db.collection("invitations").document(invitationID).update("active", true);
+//                            db.collection("invitations").document(invitationID).update("date", currentDate);
+                            db.collection("invitations").document(invitationID).update("dateDay", dateDay);
+                            db.collection("invitations").document(invitationID).update("dateMonth", dateMonth);
+                            db.collection("invitations").document(invitationID).update("dateYear", dateYear);
+                            db.collection("invitations").document(invitationID).update("numRoommatesCapacity", roommateNum);
+                            db.collection("invitations").document(invitationID).update("numSpotsLeft", spotNum);
+//                            db.collection("invitations").document(invitationID).update("ownerID", firebaseAuth.getCurrentUser().getUid());
+                            db.collection("invitations").document(invitationID).update("expectation", expectation);
 
-                            Map<String, Object> home = new HashMap<>();
-                            home.put("bbQuantity", String.valueOf(bedNum) + "B" + String.valueOf(bathNum) + "B");
-                            home.put("deadline", deadlineMonth+"/"+deadlineDay+"/"+deadlineYear);
-                            home.put("deadlineDay", deadlineDay);
-                            home.put("deadlineMonth", deadlineMonth);
-                            home.put("deadlineYear", deadlineYear);
-                            home.put("homeType", homeType);
-                            home.put("location", address);
-                            home.put("userPriceRange", false);
-                            home.put("onePrice", price);
-                            home.put("maxPrice", price);
-                            home.put("distanceFromCampus", distanceFromCampus);
-                            db.collection("invitations").document(invID).update("home", home);
-                            db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        DocumentSnapshot ds = task.getResult();
-                                        ArrayList<String> invitationIDList = (ArrayList<String>) ds.get("invitationsList");
-                                        invitationIDList.add(invID);
-                                        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("invitationsList", invitationIDList);
-                                        popupWindow.dismiss();
-                                    }
-                                }
-                            });
+                            Map<String, Object> new_home = new HashMap<>();
+                            new_home.put("bbQuantity", String.valueOf(bedNum) + "B" + String.valueOf(bathNum) + "B");
+                            new_home.put("deadline", deadlineMonth+"/"+deadlineDay+"/"+deadlineYear);
+                            new_home.put("deadlineDay", deadlineDay);
+                            new_home.put("deadlineMonth", deadlineMonth);
+                            new_home.put("deadlineYear", deadlineYear);
+                            new_home.put("homeType", homeType);
+                            new_home.put("location", address);
+                            new_home.put("userPriceRange", false);
+                            new_home.put("onePrice", price);
+                            new_home.put("maxPrice", price);
+                            new_home.put("numBedrooms", bedNum);
+                            new_home.put("numBathrooms", bathNum);
+                            new_home.put("distanceFromCampus", distanceFromCampus);
+                            db.collection("invitations").document(invitationID).update("home", new_home);
+//                            db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//                                @Override
+//                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                                    if (task.isSuccessful()) {
+//                                        DocumentSnapshot ds = task.getResult();
+//                                        ArrayList<String> invitationIDList = (ArrayList<String>) ds.get("invitationsList");
+//                                        invitationIDList.add(invitationID);
+//                                        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("invitationsList", invitationIDList);
+//                                        popupWindow.dismiss();
+//                                    }
+//                                }
+//                            });
+                            popupWindow.dismiss();
                         }
                     }
+
                 });
             }
         });
@@ -629,19 +660,36 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                                             for (String resID : responsesToDelete) {
                                                 db.collection("responses").document(resID).delete();
                                             }
-                                            db.collection("users").document(currentUserID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                            db.collection("users").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                 @Override
-                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                     if (task.isSuccessful()) {
-                                                        DocumentSnapshot ds = task.getResult();
-                                                        ArrayList<String> resIDList = (ArrayList<String>) ds.get("responsesList");
-                                                        for (String resID : responsesToDelete) {
-                                                            resIDList.remove(resID);
+                                                        for (DocumentSnapshot d : task.getResult()) {
+                                                            ArrayList<String> resIDList = (ArrayList<String>) d.getData().get("responsesList");
+                                                            if (!resIDList.isEmpty()) {
+                                                                for (String resID : responsesToDelete) {
+                                                                    resIDList.remove(resID);
+                                                                }
+                                                                db.collection("users").document(d.getId()).update("responsesList", resIDList);
+                                                            }
+                                                            if (d.getId().equals(currentUserID)) {
+                                                                db.collection("users").document(currentUserID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            DocumentSnapshot _ds = task.getResult();
+                                                                            ArrayList<String> invs = (ArrayList<String>) _ds.get("invitationsList");
+                                                                            invs.remove(invID);
+                                                                            db.collection("users").document(currentUserID).update("invitationsList", invs);
+                                                                        }
+                                                                    }
+                                                                });
+                                                            }
                                                         }
-                                                        db.collection("users").document(currentUserID).update("responsesList", resIDList);
                                                     }
                                                 }
                                             });
+
                                         }
                                     }
                                 });
@@ -684,4 +732,15 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         }
 
     }
+
+    private int getIndex(Spinner spinner, String myString) {
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+        return 0;
+    }
 }
+
+

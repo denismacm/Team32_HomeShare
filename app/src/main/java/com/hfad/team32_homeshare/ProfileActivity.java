@@ -49,6 +49,7 @@ import com.hfad.team32_homeshare.databinding.ActivityProfileBinding;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -159,6 +160,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                     if (!prevFullName.equals(fullName)) {
                         ref.update("fullName", fullName);
+                        ref.update("fullNameLower", fullName.toLowerCase());
                     }
                     if (!prevPhone.equals(phone)) {
                         ref.update("phone", phone);
@@ -168,6 +170,15 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                     if (!prevClassStanding.equals(classStanding)) {
                         ref.update("classStanding", classStanding);
+                        ArrayList<String> arr = new ArrayList<>();
+                        arr.add("freshman");
+                        arr.add("sophomore");
+                        arr.add("junior");
+                        arr.add("senior");
+                        arr.add("masters");
+                        arr.add("doctorate");
+                        arr.add("employee");
+                        ref.update("classStandingNum", arr.indexOf(classStanding)+1);
                     }
                     if (!prevGender.equals(gender)) {
                         ref.update("gender", gender);
@@ -176,7 +187,7 @@ public class ProfileActivity extends AppCompatActivity {
 //                        uploadPicture();
 //                    }
                     Toast.makeText(ProfileActivity.this, "Submitted changes for " + email, Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(ProfileActivity.this, SettingsActivity.class));
+                    startActivity(new Intent(ProfileActivity.this, MainActivity.class));
 //                    finish();
                 }
             }
@@ -240,6 +251,12 @@ public class ProfileActivity extends AppCompatActivity {
                                 } else {
                                     Map<String, Object> user = new HashMap<>();
                                     db.collection("users").document(firebaseUser.getUid()).set(user);
+                                    ArrayList<String> declinedIDs = new ArrayList<>();
+                                    ArrayList<String> responsesList = new ArrayList<>();
+                                    ArrayList<String> invitationsList = new ArrayList<>();
+                                    db.collection("users").document(firebaseUser.getUid()).update("declinedInvitationsList", declinedIDs);
+                                    db.collection("users").document(firebaseUser.getUid()).update("responsesList", responsesList);
+                                    db.collection("users").document(firebaseUser.getUid()).update("invitationsList", invitationsList);
                                     binding.emailEt.setText(firebaseUser.getEmail());
                                 }
                             }
@@ -255,6 +272,7 @@ public class ProfileActivity extends AppCompatActivity {
         }
         return 0;
     }
+
     private void choosePicture() {
         Intent intent = new Intent();
         intent.setType("image/*");

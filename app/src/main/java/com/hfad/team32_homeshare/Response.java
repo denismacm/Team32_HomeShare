@@ -14,4 +14,12 @@ public class Response {
 
     public Response() {}
 
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public String getSenderGender() {
+        return senderGender;
+    }
+
 }

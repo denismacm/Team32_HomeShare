@@ -26,6 +26,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hfad.team32_homeshare.databinding.ActivityRegisterBinding;
 
+import org.checkerframework.checker.units.qual.A;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -132,6 +136,13 @@ public class RegisterActivity extends AppCompatActivity {
                         user.put("fullName", fullName);
                         user.put("phone", phone);
                         user.put("email", email);
+                        user.put("fullNameLower", fullName.toLowerCase());
+                        ArrayList<String> declinedIDs = new ArrayList<>();
+                        user.put("declinedInvitationsList", declinedIDs);
+                        ArrayList<String> responsesList = new ArrayList<>();
+                        user.put("responsesList", responsesList);
+                        ArrayList<String> invitationsList = new ArrayList<>();
+                        user.put("invitationsList", invitationsList);
 //                        User user = new User(email, phone, fullName);
 //                        mDatabase.child("users").child(firebaseUser.getUid()).setValue(user);
                         db.collection("users").document(firebaseUser.getUid()).set(user);
