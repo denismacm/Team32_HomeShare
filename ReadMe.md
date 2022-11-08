@@ -6,6 +6,7 @@ Once you click "Pixel 2," you must choose “Nougat API 24 Android 7.0 x86” wh
 Now your emulator is set up and you can run the app on your AVD by  clicking “Run ‘app’” command from the “Run” menu.
 
 ## Using HomeShare
+Before running our app for the first time, press "Files => Sync Project with Gradle Files"
 Now that our app is running on your virtual emulator, you must first create an account using your name and email.
 You can also login with Google to use our application.
 Also, if you create an account without logging in through Google and log in with Google the next time, our app will
