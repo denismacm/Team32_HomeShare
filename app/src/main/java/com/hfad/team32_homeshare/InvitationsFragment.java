@@ -37,12 +37,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InvitationsFragment extends Fragment {
     private RecyclerView recyclerView;
     private AdapterInvitations adapter;
-    private ArrayList<Invitation> invitationsList;
+    public ArrayList<Invitation> invitationsList;
     private ArrayList<String> declinedInvitationIDs;
     private Spinner spin;
     private Spinner spinTwo;
@@ -96,7 +97,9 @@ public class InvitationsFragment extends Fragment {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getGender));
                         adapter.notifyDataSetChanged();
                     } else if (qu.equals("Class Standing")) {
-                        Collections.sort(invitationsList, Comparator.comparing(Invitation::getOwnerClassStandingNum));
+                        // Used to be
+                        // Collections.sort(invitationsList, Comparator.comparing(Invitation::getOwnerClassStandingNum));
+                        sortInvitationsList_ClassStandingNum_Ascending(invitationsList);
                         adapter.notifyDataSetChanged();
                     } else if (qu.equals("Distance from USC (miles, filter by maximum)")) {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getDistance));
@@ -129,8 +132,10 @@ public class InvitationsFragment extends Fragment {
                         Collections.reverse(invitationsList);
                         adapter.notifyDataSetChanged();
                     } else if (qu.equals("Class Standing")) {
-                        Collections.sort(invitationsList, Comparator.comparing(Invitation::getOwnerClassStandingNum));
-                        Collections.reverse(invitationsList);
+                        // Used to be
+                        // Collections.sort(invitationsList, Comparator.comparing(Invitation::getOwnerClassStandingNum));
+                        // Collections.reverse(invitationsList);
+                        sortInvitationsList_ClassStandingNum_Descending(invitationsList);
                         adapter.notifyDataSetChanged();
                     } else if (qu.equals("Distance from USC (miles, filter by maximum)")) {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getDistance));
@@ -703,5 +708,14 @@ public class InvitationsFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void sortInvitationsList_ClassStandingNum_Ascending(ArrayList<Invitation> invList) {
+        Collections.sort(invList, Comparator.comparing(Invitation::getOwnerClassStandingNum));
+    }
+
+    public void sortInvitationsList_ClassStandingNum_Descending(ArrayList<Invitation> invList) {
+        Collections.sort(invList, Comparator.comparing(Invitation::getOwnerClassStandingNum));
+        Collections.reverse(invList);
     }
 }

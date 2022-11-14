@@ -98,7 +98,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (TextUtils.isEmpty(fullName)) {
             binding.fullNameEt.setError("Name cannot be empty.");
-        } else if (!fullName.contains(" ")) {
+        } else if (!validateFirstAndLastName(fullName)) {
             binding.fullNameEt.setError("Name must contain at least a first and last name.");
         } else if (TextUtils.isEmpty(phone)) {
             binding.phoneNumEt.setError("Phone cannot be empty.");
@@ -110,13 +110,41 @@ public class RegisterActivity extends AppCompatActivity {
             binding.emailEt.setError("Invalid email format");
         } else if (TextUtils.isEmpty(password1)) {
             binding.passwordEt.setError("Enter password");
-        } else if (password1.length() < 6) {
+        } else if (!isValidPassword(password1)) {
             binding.passwordEt.setError("Password must be greater than 5 characters.");
-        } else if (!password1.equals(password2)) {
+        } else if (!validateMatchingPassword(password1, password2)) {
             binding.passwordConfirmEt.setError("Passwords must be equal to each other.");
         } else {
             firebaseSignUp();
         }
+    }
+
+    public static boolean validateNameFilled(String fullName) {
+        return !TextUtils.isEmpty(fullName);
+    }
+
+    public static boolean validateFirstAndLastName(String fullName) {
+        return fullName.trim().contains(" ");
+    }
+
+    public boolean validatePhoneFilled(String phone) {
+        return !TextUtils.isEmpty(phone);
+    }
+
+    public static boolean validatePhone(String phone) {
+        return Patterns.PHONE.matcher(phone).matches();
+    }
+
+    public static boolean validateEmail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public static boolean isValidPassword(String password) {
+        return password.trim().length() > 6;
+    }
+
+    public static boolean validateMatchingPassword(String password1, String password2) {
+        return password1.trim().equals(password2.trim());
     }
 
     private void firebaseSignUp() {
