@@ -38,7 +38,7 @@ import java.util.Map;
 public class ResponsesFragment extends Fragment {
     private RecyclerView recyclerView;
     private AdapterResponses adapter;
-    private ArrayList<Response> responsesList;
+    public ArrayList<Response> responsesList;
     private Spinner spin;
     private Spinner spinTwo;
     private String[] items = new String[]{"Name", "Gender"};
