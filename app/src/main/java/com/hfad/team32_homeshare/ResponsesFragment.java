@@ -80,22 +80,21 @@ public class ResponsesFragment extends Fragment {
                 String text = adapterView.getItemAtPosition(position).toString();
 //                Toast.makeText(adapterView.getContext(), text, Toast.LENGTH_SHORT).show();
                 String qu = spin.getSelectedItem().toString();
+
                 if (position == 0) {
                     if (qu.equals("Gender")) {
-                        Collections.sort(responsesList, Comparator.comparing(Response::getSenderGender));
+                        sortResponsesList_Gender_Ascending(responsesList);
                         adapter.notifyDataSetChanged();
                     } else {
-                        Collections.sort(responsesList, Comparator.comparing(Response::getSenderName));
+                        sortResponsesList_Name_Ascending(responsesList);
                         adapter.notifyDataSetChanged();
                     }
                 } else {
                     if (qu.equals("Gender")) {
-                        Collections.sort(responsesList, Comparator.comparing(Response::getSenderGender));
-                        Collections.reverse(responsesList);
+                        sortResponsesList_Gender_Descending(responsesList);
                         adapter.notifyDataSetChanged();
                     } else {
-                        Collections.sort(responsesList, Comparator.comparing(Response::getSenderName));
-                        Collections.reverse(responsesList);
+                        sortResponsesList_Name_Descending(responsesList);
                         adapter.notifyDataSetChanged();
                     }
                 }
@@ -132,19 +131,12 @@ public class ResponsesFragment extends Fragment {
                 String text = searchText.getText().toString().trim().toLowerCase();
                 String query = spin.getSelectedItem().toString();
                 if (query.equals("Name")) {
-                    ArrayList<Response> toRemove = new ArrayList<>();
-                    for (Response _res : responsesList) {
-                        if (!_res.senderName.toLowerCase().contains(text)) {
-                            toRemove.add(_res);
-                        }
-                    }
-                    for (Response _res : toRemove) {
-                        responsesList.remove(_res);
-                    }
+                    filterResponsesList_Name(responsesList, text);
                     adapter.notifyDataSetChanged();
                 }
                 else {
                     filterResponsesList_Gender(responsesList, text);
+                    adapter.notifyDataSetChanged();
                 }
             }
         });

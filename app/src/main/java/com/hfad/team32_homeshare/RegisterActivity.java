@@ -119,24 +119,8 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public static boolean validateNameFilled(String fullName) {
-        return !TextUtils.isEmpty(fullName);
-    }
-
     public static boolean validateFirstAndLastName(String fullName) {
         return fullName.trim().contains(" ");
-    }
-
-    public boolean validatePhoneFilled(String phone) {
-        return !TextUtils.isEmpty(phone);
-    }
-
-    public static boolean validatePhone(String phone) {
-        return Patterns.PHONE.matcher(phone).matches();
-    }
-
-    public static boolean validateEmail(String email) {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     public static boolean isValidPassword(String password) {

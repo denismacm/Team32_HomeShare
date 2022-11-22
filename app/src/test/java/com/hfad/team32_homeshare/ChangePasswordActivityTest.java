@@ -13,9 +13,9 @@ import java.util.Collections;
 public class ChangePasswordActivityTest {
     @Test
     public void password_isValid() {
-        assertFalse(ChangePasswordActivity.validateMatchingPassword("ZYXWVUT", "zyxwvut"));
-        assertFalse(ChangePasswordActivity.validateMatchingPassword("Abcdefg", "abcdefg"));
-        assertTrue(ChangePasswordActivity.validateMatchingPassword("Lmbldflk1", "Lmbldflk1"));
-        assertTrue(ChangePasswordActivity.validateMatchingPassword("  LSKjdk109  ", "LSKjdk109"));
+        assertFalse(ChangePasswordActivity.validateMatchingPassword("LASDJFLASDJF", "LaSDJFLASDJF"));
+        assertFalse(ChangePasswordActivity.validateMatchingPassword("BZXCVMZNXCV", "BZXCVMZNXCv"));
+        assertTrue(ChangePasswordActivity.validateMatchingPassword("L0s90asf", "L0s90asf"));
+        assertTrue(ChangePasswordActivity.validateMatchingPassword("  ALSDKFJALS12  ", "ALSDKFJALS12"));
     }
 }
