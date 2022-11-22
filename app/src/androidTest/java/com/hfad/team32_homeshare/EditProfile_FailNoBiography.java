@@ -30,24 +30,20 @@ import androidx.test.filters.LargeTest;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
-import org.junit.FixMethodOrder;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class RegisterActivityTest {
+public class EditProfile_FailNoBiography {
 
     @Rule
     public ActivityScenarioRule<MainActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
     @Test
-    public void registerActivityTest() {
+    public void editProfile_FailNoBiography() {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
@@ -57,57 +53,7 @@ public class RegisterActivityTest {
             e.printStackTrace();
         }
 
-        ViewInteraction materialTextView = onView(
-                allOf(withId(R.id.noAccount), withText("Don't have an account? Register here."),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                8),
-                        isDisplayed()));
-        materialTextView.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(700);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         ViewInteraction appCompatEditText = onView(
-                allOf(withId(R.id.fullNameEt),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fullNameTil),
-                                        0),
-                                0),
-                        isDisplayed()));
-//        appCompatEditText.perform(click());
-
-        ViewInteraction appCompatEditText2 = onView(
-                allOf(withId(R.id.fullNameEt),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.fullNameTil),
-                                        0),
-                                0),
-                        isDisplayed()));
-        String digits = String.valueOf((long) Math.floor(Math.random() * 9_000_000_000L) + 1_000_000_000L);
-        appCompatEditText2.perform(replaceText("Test User " + digits), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.phoneNumEt),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.phoneNumTil),
-                                        0),
-                                0),
-                        isDisplayed()));
-        appCompatEditText3.perform(replaceText("1234567890"), closeSoftKeyboard());
-
-        ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.emailEt),
                         childAtPosition(
                                 childAtPosition(
@@ -115,9 +61,29 @@ public class RegisterActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText4.perform(replaceText("testuser" + digits + "@email.com"), closeSoftKeyboard());
+        appCompatEditText.perform(click());
 
-        ViewInteraction appCompatEditText5 = onView(
+        ViewInteraction appCompatEditText2 = onView(
+                allOf(withId(R.id.emailEt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.emailTil),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatEditText2.perform(replaceText("test@email.com"), closeSoftKeyboard());
+
+        ViewInteraction appCompatEditText3 = onView(
+                allOf(withId(R.id.emailEt), withText("test@email.com"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.emailTil),
+                                        0),
+                                0),
+                        isDisplayed()));
+        appCompatEditText3.perform(pressImeActionButton());
+
+        ViewInteraction appCompatEditText4 = onView(
                 allOf(withId(R.id.passwordEt),
                         childAtPosition(
                                 childAtPosition(
@@ -125,29 +91,27 @@ public class RegisterActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText5.perform(replaceText("pAsSwOrD"), closeSoftKeyboard());
+        appCompatEditText4.perform(replaceText("PASSword"), closeSoftKeyboard());
 
-        ViewInteraction appCompatEditText6 = onView(
-                allOf(withId(R.id.passwordConfirmEt),
+        ViewInteraction appCompatEditText5 = onView(
+                allOf(withId(R.id.passwordEt), withText("PASSword"),
                         childAtPosition(
                                 childAtPosition(
-                                        withId(R.id.passwordConfirmTil),
+                                        withId(R.id.passwordTil),
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText6.perform(replaceText("pAsSwOrD"), closeSoftKeyboard());
+        appCompatEditText5.perform(pressImeActionButton());
 
-//        appCompatEditText9.perform(closeSoftKeyboard());
-
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.registerBtn), withText("Sign Up"),
+        ViewInteraction materialButton = onView(
+                allOf(withId(R.id.loginBtn), withText("Login"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(android.R.id.content),
                                         0),
-                                7),
+                                5),
                         isDisplayed()));
-        materialButton2.perform(click());
+        materialButton.perform(click());
 
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -158,25 +122,6 @@ public class RegisterActivityTest {
             e.printStackTrace();
         }
 
-        ViewInteraction textView = onView(
-                allOf(withText("Manage Your Profile"),
-                        withParent(allOf(withId(androidx.appcompat.R.id.action_bar),
-                                withParent(withId(androidx.appcompat.R.id.action_bar_container)))),
-                        isDisplayed()));
-        textView.check(matches(withText("Manage Your Profile")));
-    }
-
-    @Test
-    public void registerActivityTest_EditProfile_FailNoPicture() {
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.nav_settings), withContentDescription("Settings"),
                         childAtPosition(
@@ -187,7 +132,7 @@ public class RegisterActivityTest {
                         isDisplayed()));
         bottomNavigationItemView.perform(click());
 
-        ViewInteraction materialButton = onView(
+        ViewInteraction materialButton2 = onView(
                 allOf(withId(R.id.editProfileBtn), withText("Edit Profile"),
                         childAtPosition(
                                 childAtPosition(
@@ -195,9 +140,58 @@ public class RegisterActivityTest {
                                         0),
                                 0),
                         isDisplayed()));
-        materialButton.perform(click());
+        materialButton2.perform(click());
 
-//        testuser7851610676@email.com
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(700);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+//        pressBack();
+//
+//        ViewInteraction editText = onView(
+//                allOf(withId(R.id.biographyEt), withText("Test biography, Biography"),
+//                        withParent(withParent(withId(R.id.biographyTil))),
+//                        isDisplayed()));
+//        editText.check(matches(withText("Test biography, Biography")));
+
+        ViewInteraction appCompatEditText6 = onView(
+                allOf(withId(R.id.biographyEt),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.biographyTil),
+                                        0),
+                                0)));
+        appCompatEditText6.perform(scrollTo(), replaceText(""), closeSoftKeyboard());
+
+//        ViewInteraction appCompatEditText7 = onView(
+//                allOf(withId(R.id.biographyEt),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withId(R.id.biographyTil),
+//                                        0),
+//                                0),
+//                        isDisplayed()));
+//        appCompatEditText7.perform(closeSoftKeyboard());
+
+        ViewInteraction materialButton3 = onView(
+                allOf(withId(R.id.submitBtn), withText("Submit Changes"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withClassName(is("android.widget.ScrollView")),
+                                        0),
+                                7)));
+        materialButton3.perform(scrollTo(), click());
+
+//        ViewInteraction editText2 = onView(
+//                allOf(withId(R.id.biographyEt), withText("Biography"),
+//                        withParent(withParent(withId(R.id.biographyTil))),
+//                        isDisplayed()));
+//        editText2.check(matches(withText("Biography")));
 
         ViewInteraction textView = onView(
                 allOf(withText("Manage Your Profile"),
@@ -206,47 +200,52 @@ public class RegisterActivityTest {
                         isDisplayed()));
         textView.check(matches(withText("Manage Your Profile")));
 
-        ViewInteraction imageView = onView(
-                allOf(withId(R.id.profilePic),
-                        withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.ScrollView.class))),
-                        isDisplayed()));
-        imageView.check(matches(isDisplayed()));
-
-//        ViewInteraction editText = onView(
+//        ViewInteraction appCompatEditText8 = onView(
 //                allOf(withId(R.id.biographyEt),
-//                        withParent(withParent(withId(R.id.biographyTil))),
-//                        isDisplayed()));
-//        editText.check(matches(withText("Biography")));
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withId(R.id.biographyTil),
+//                                        0),
+//                                0)));
+//        appCompatEditText8.perform(scrollTo(), click());
+//
+//        ViewInteraction appCompatEditText9 = onView(
+//                allOf(withId(R.id.biographyEt),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withId(R.id.biographyTil),
+//                                        0),
+//                                0)));
+//        appCompatEditText9.perform(scrollTo(), replaceText("Test biography"), closeSoftKeyboard());
 
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.submitBtn), withText("Submit Changes"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withClassName(is("android.widget.ScrollView")),
-                                        0),
-                                7)));
-        materialButton2.perform(scrollTo(), click());
+//        ViewInteraction materialButton4 = onView(
+//                allOf(withId(R.id.submitBtn), withText("Submit Changes"),
+//                        childAtPosition(
+//                                childAtPosition(
+//                                        withClassName(is("android.widget.ScrollView")),
+//                                        0),
+//                                7)));
+//        materialButton4.perform(scrollTo(), click());
 
-        ViewInteraction textView2 = onView(
-                allOf(withText("Manage Your Profile"),
-                        withParent(allOf(withId(androidx.appcompat.R.id.action_bar),
-                                withParent(withId(androidx.appcompat.R.id.action_bar_container)))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Manage Your Profile")));
-    }
+        pressBack();
 
-    @Test
-    public void signOut_registerActivityTest() {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
         // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
         try {
-            Thread.sleep(3000);
+            Thread.sleep(700);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        ViewInteraction bottomNavigationItemView = onView(
+        ViewInteraction textView2 = onView(
+                allOf(withText("HomeShare"),
+                        withParent(allOf(withId(androidx.appcompat.R.id.action_bar),
+                                withParent(withId(androidx.appcompat.R.id.action_bar_container)))),
+                        isDisplayed()));
+        textView2.check(matches(withText("HomeShare")));
+
+        ViewInteraction bottomNavigationItemView2 = onView(
                 allOf(withId(R.id.nav_settings), withContentDescription("Settings"),
                         childAtPosition(
                                 childAtPosition(
@@ -254,9 +253,9 @@ public class RegisterActivityTest {
                                         0),
                                 2),
                         isDisplayed()));
-        bottomNavigationItemView.perform(click());
+        bottomNavigationItemView2.perform(click());
 
-        ViewInteraction materialButton2 = onView(
+        ViewInteraction materialButton5 = onView(
                 allOf(withId(R.id.logoutBtn), withText("Log out"),
                         childAtPosition(
                                 childAtPosition(
@@ -264,23 +263,7 @@ public class RegisterActivityTest {
                                         0),
                                 3),
                         isDisplayed()));
-        materialButton2.perform(click());
-
-        // Added a sleep statement to match the app's execution delay.
-        // The recommended way to handle such scenarios is to use Espresso idling resources:
-        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        ViewInteraction textView2 = onView(
-                allOf(withText("Login"),
-                        withParent(allOf(withId(androidx.appcompat.R.id.action_bar),
-                                withParent(withId(androidx.appcompat.R.id.action_bar_container)))),
-                        isDisplayed()));
-        textView2.check(matches(withText("Login")));
+        materialButton5.perform(click());
     }
 
     private static Matcher<View> childAtPosition(
