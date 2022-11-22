@@ -254,6 +254,12 @@ public class SuccessfulInvitationTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction textView = onView(
                 allOf(withId(R.id.name), withText("Test User"),
                         withParent(withParent(IsInstanceOf.<View>instanceOf(android.widget.FrameLayout.class))),
@@ -327,6 +333,12 @@ public class SuccessfulInvitationTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction materialButton3 = onView(
                 allOf(withId(R.id.editPost),
                         childAtPosition(
@@ -336,6 +348,12 @@ public class SuccessfulInvitationTest {
                                 2),
                         isDisplayed()));
         materialButton3.perform(click());
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction appCompatEditText9 = onView(
                 allOf(withId(R.id.minPriceEt),
@@ -445,6 +463,12 @@ public class SuccessfulInvitationTest {
                         isDisplayed()));
         materialButton2.perform(click());
 
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         ViewInteraction materialButton4 = onView(
                 allOf(withId(R.id.trashInv),
                         childAtPosition(
@@ -454,6 +478,12 @@ public class SuccessfulInvitationTest {
                                 4),
                         isDisplayed()));
         materialButton4.perform(click());
+
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction materialButton5 = onView(
                 allOf(withId(android.R.id.button1), withText("Confirm"),
@@ -554,6 +584,12 @@ public class SuccessfulInvitationTest {
                                 1),
                         isDisplayed()));
         materialButton3.perform(click());
+
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         ViewInteraction recyclerView = onView(
                 allOf(withId(R.id.invite_1),
