@@ -142,6 +142,7 @@ public class ResponsesFragment extends Fragment {
                         responsesList.remove(_res);
                     }
                     adapter.notifyDataSetChanged();
+                    //filterResponsesList_Name(responsesList, text);
                 }
                 else {
                     ArrayList<Response> toRemove = new ArrayList<>();
@@ -266,6 +267,36 @@ public class ResponsesFragment extends Fragment {
 //        responsesList.add(inv7);
 //
 //        adapter.notifyDataSetChanged();
+    }
+
+    public void sortResponsesList_Name_Ascending(ArrayList<Response> responsesList) {
+        Collections.sort(responsesList, Comparator.comparing(Response::getSenderName));
+    }
+
+    public void sortResponsesList_Name_Descending(ArrayList<Response> responsesList) {
+        Collections.sort(responsesList, Comparator.comparing(Response::getSenderName));
+        Collections.reverse(responsesList);
+    }
+
+    public void sortResponsesList_Gender_Ascending(ArrayList<Response> responsesList) {
+        Collections.sort(responsesList, Comparator.comparing(Response::getSenderGender));
+    }
+
+    public void sortResponsesList_Gender_Descending(ArrayList<Response> responsesList) {
+        Collections.sort(responsesList, Comparator.comparing(Response::getSenderGender));
+        Collections.reverse(responsesList);
+    }
+
+    public void filterResponsesList_Name(ArrayList<Response> responsesList, String text) {
+        ArrayList<Response> toRemove = new ArrayList<>();
+        for (Response _res : responsesList) {
+            if (!_res.senderName.toLowerCase().contains(text.toLowerCase())) {
+                toRemove.add(_res);
+            }
+        }
+        for (Response _res : toRemove) {
+            responsesList.remove(_res);
+        }
     }
 
 }
