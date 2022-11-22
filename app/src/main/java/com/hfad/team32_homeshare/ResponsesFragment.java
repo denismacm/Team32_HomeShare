@@ -144,16 +144,7 @@ public class ResponsesFragment extends Fragment {
                     adapter.notifyDataSetChanged();
                 }
                 else {
-                    ArrayList<Response> toRemove = new ArrayList<>();
-                    for (Response _res : responsesList) {
-                        if (!_res.senderGender.contains(text)) {
-                            toRemove.add(_res);
-                        }
-                    }
-                    for (Response _res : toRemove) {
-                        responsesList.remove(_res);
-                    }
-                    adapter.notifyDataSetChanged();
+                    filterResponsesList_Gender(responsesList, text);
                 }
             }
         });
@@ -266,6 +257,18 @@ public class ResponsesFragment extends Fragment {
 //        responsesList.add(inv7);
 //
 //        adapter.notifyDataSetChanged();
+    }
+
+    public void filterResponsesList_Gender(ArrayList<Response> responsesList, String text) {
+        ArrayList<Response> toRemove = new ArrayList<>();
+        for (Response _res : responsesList) {
+            if (!_res.senderGender.toLowerCase().contains(text.toLowerCase())) {
+                toRemove.add(_res);
+            }
+        }
+        for (Response _res : toRemove) {
+            responsesList.remove(_res);
+        }
     }
 
 }

@@ -120,7 +120,7 @@ public class InvitationsFragment extends Fragment {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getDeadlineYear));
                         adapter.notifyDataSetChanged();
                     } else if (qu.equals("Year Posted YYYY (filter before)")) {
-                        Collections.sort(invitationsList, Comparator.comparing(Invitation::getYearPosted));
+                        sortInvitationsList_Date_Ascending(invitationsList);
                         adapter.notifyDataSetChanged();
                     } else {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getFullName));
@@ -162,8 +162,7 @@ public class InvitationsFragment extends Fragment {
                         Collections.reverse(invitationsList);
                         adapter.notifyDataSetChanged();
                     } else if (qu.equals("Year Posted YYYY (filter before)")) {
-                        Collections.sort(invitationsList, Comparator.comparing(Invitation::getYearPosted));
-                        Collections.reverse(invitationsList);
+                        sortInvitationsList_Date_Descending(invitationsList);
                         adapter.notifyDataSetChanged();
                     } else {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getFullName));
@@ -716,6 +715,14 @@ public class InvitationsFragment extends Fragment {
 
     public void sortInvitationsList_ClassStandingNum_Descending(ArrayList<Invitation> invList) {
         Collections.sort(invList, Comparator.comparing(Invitation::getOwnerClassStandingNum));
+        Collections.reverse(invList);
+    }
+    public void sortInvitationsList_Date_Ascending(ArrayList<Invitation> invList) {
+        Collections.sort(invList, Comparator.comparing(Invitation::getYearPosted));
+    }
+
+    public void sortInvitationsList_Date_Descending(ArrayList<Invitation> invList) {
+        Collections.sort(invList, Comparator.comparing(Invitation::getYearPosted));
         Collections.reverse(invList);
     }
 }

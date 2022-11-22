@@ -92,6 +92,9 @@ public class ChangePasswordActivity extends AppCompatActivity {
             });
         }
     }
+    public static boolean validateMatchingPassword(String password1, String password2) {
+        return password1.trim().equals(password2.trim());
+    }
 
     private void checkUser() {
         // check if user is already logged in, if so then open profile activity
