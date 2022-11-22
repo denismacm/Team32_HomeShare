@@ -8,10 +8,12 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.pressImeActionButton;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
@@ -28,6 +30,7 @@ import androidx.test.filters.LargeTest;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -149,6 +152,51 @@ public class failedInvitationTest {
                                         0),
                                 17)));
         materialButton3.perform(scrollTo(), click());
+
+        ViewInteraction textView = onView(
+                allOf(withText("Deadline (MM/DD/YYYY)"),
+                        withParent(allOf(withId(R.id.deadline),
+                                withParent(IsInstanceOf.<View>instanceOf(android.widget.RelativeLayout.class)))),
+                        isDisplayed()));
+        textView.check(matches(withText("Deadline (MM/DD/YYYY)")));
+
+        pressBack();
+
+        ViewInteraction bottomNavigationItemView = onView(
+                allOf(withId(R.id.nav_settings), withContentDescription("Settings"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.navigation),
+                                        0),
+                                2),
+                        isDisplayed()));
+        bottomNavigationItemView.perform(click());
+
+        ViewInteraction materialButton4 = onView(
+                allOf(withId(R.id.logoutBtn), withText("Log out"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.frame_layout),
+                                        0),
+                                3),
+                        isDisplayed()));
+        materialButton4.perform(click());
+
+        // Added a sleep statement to match the app's execution delay.
+        // The recommended way to handle such scenarios is to use Espresso idling resources:
+        // https://google.github.io/android-testing-support-library/docs/espresso/idling-resource/index.html
+        try {
+            Thread.sleep(700);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ViewInteraction textView2 = onView(
+                allOf(withText("Login"),
+                        withParent(allOf(withId(androidx.appcompat.R.id.action_bar),
+                                withParent(withId(androidx.appcompat.R.id.action_bar_container)))),
+                        isDisplayed()));
+        textView2.check(matches(withText("Login")));
     }
 
     private static Matcher<View> childAtPosition(
