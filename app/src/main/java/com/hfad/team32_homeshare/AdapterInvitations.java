@@ -192,6 +192,14 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                 ((TextView)popupWindow.getContentView().findViewById(R.id.priceOL)).setText(Html.fromHtml(price));
                 ((TextView)popupWindow.getContentView().findViewById(R.id.numCapacityOL)).setText(numRoommatesCapacity);
                 ((TextView)popupWindow.getContentView().findViewById(R.id.numSpotsOL)).setText(numSpotsLeft);
+                popupView.findViewById(R.id.goToProfile).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, UserPageActivity.class);
+                        i.putExtra("userID", inv.ownerID);
+                        context.startActivity(i);
+                    }
+                });
                 popupView.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

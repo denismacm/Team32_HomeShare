@@ -115,6 +115,13 @@
             android:textSize= "18sp"
             android:textColor="@color/black" />
         <Button
+            android:id="@+id/goToProfile"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:text="Go to Profile"
+            android:layout_marginTop="10dp" />
+        <Button
             android:id="@+id/dismiss"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
