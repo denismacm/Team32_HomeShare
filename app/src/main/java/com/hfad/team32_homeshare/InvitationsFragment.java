@@ -45,10 +45,12 @@ public class InvitationsFragment extends Fragment {
     private AdapterInvitations adapter;
     public ArrayList<Invitation> invitationsList;
     private ArrayList<String> declinedInvitationIDs;
+    private ArrayList<String> favInvitationIDs;
     private Spinner spin;
     private Spinner spinTwo;
     private String[] items = new String[]{"First Name", "Gender", "Class Standing", "Distance from USC (miles, filter by maximum)",
-            "Number of Bedrooms","Number of Bathrooms", "Price (filter by maximum)", "Number of Roommates", "Deadline Year YYYY (filter before)", "Year Posted YYYY (filter before)"};
+            "Number of Bedrooms","Number of Bathrooms", "Price (filter by maximum)", "Number of Roommates", "Deadline Year YYYY (filter before)",
+            "Year Posted YYYY (filter before)", "Favorites"};
     private String[] order = new String[]{"Ascending", "Descending"};
 
     public InvitationsFragment() {
@@ -122,6 +124,9 @@ public class InvitationsFragment extends Fragment {
                     } else if (qu.equals("Year Posted YYYY (filter before)")) {
                         sortInvitationsList_Date_Ascending(invitationsList);
                         adapter.notifyDataSetChanged();
+                    }else if (qu.equals("Favorites")) {
+                        //Collections.sort(invitationsList, Comparator.comparing(Invitation::));
+                        adapter.notifyDataSetChanged();
                     } else {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getFullName));
                         adapter.notifyDataSetChanged();
@@ -164,7 +169,10 @@ public class InvitationsFragment extends Fragment {
                     } else if (qu.equals("Year Posted YYYY (filter before)")) {
                         sortInvitationsList_Date_Descending(invitationsList);
                         adapter.notifyDataSetChanged();
-                    } else {
+                    } else if (qu.equals("Favorites")) {
+                        //Collections.sort(invitationsList, Comparator.comparing(Invitation::));
+                        adapter.notifyDataSetChanged();
+                    }else {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getFullName));
                         Collections.reverse(invitationsList);
                         adapter.notifyDataSetChanged();
@@ -213,6 +221,7 @@ public class InvitationsFragment extends Fragment {
                 String text = et.getText().toString().trim().toLowerCase();
                 String query = spin.getSelectedItem().toString();
                 updateDeclinedInvitations();
+                updatefavInvitations();
 //                if (text.equals("")) {
 //                    invitationsList.clear();
 //                    CreateDataForCards(view);
@@ -656,6 +665,7 @@ public class InvitationsFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         updateDeclinedInvitations();
+        updatefavInvitations();
         db.collection("invitations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -704,6 +714,20 @@ public class InvitationsFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot ds = task.getResult();
                     declinedInvitationIDs = (ArrayList<String>) ds.get("declinedInvitationsList");
+                }
+            }
+        });
+    }
+
+    private void updatefavInvitations() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot ds = task.getResult();
+                    favInvitationIDs = (ArrayList<String>) ds.get("favInvitationsList");
                 }
             }
         });
