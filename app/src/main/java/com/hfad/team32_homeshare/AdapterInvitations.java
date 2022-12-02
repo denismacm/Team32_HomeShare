@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -112,7 +113,35 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             holder.deleteButton.setVisibility(GONE);
             holder.editInv.setVisibility(View.VISIBLE);
             holder.trashInv.setVisibility(View.VISIBLE);
+        } else {
+            holder.messageButton.setVisibility(View.VISIBLE);
+            holder.deleteButton.setVisibility(View.VISIBLE);
+            holder.editInv.setVisibility(GONE);
+            holder.trashInv.setVisibility(GONE);
         }
+
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        database.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot ds = task.getResult();
+                    if (ds.getData().get("favInvitationsList") != null) {
+                        ArrayList<String> favInvitationIDs = (ArrayList<String>) ds.get("favInvitationsList");
+                        if (favInvitationIDs.contains(invitationID)) {
+                            holder.fvtBtn.setVisibility(GONE);
+                            holder.unFvtBtn.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.fvtBtn.setVisibility(View.VISIBLE);
+                            holder.unFvtBtn.setVisibility(GONE);
+                        }
+                    } else {
+                        ArrayList<String> emptyFavs = new ArrayList<>();
+                        database.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("favInvitationsList", emptyFavs);
+                    }
+                }
+            }
+        });
 //        String hiddenID = UUID.randomUUID().toString();
         String expectation = inv.expectation;
         String invID = inv.invitationID;
@@ -755,6 +784,44 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             }
         });
 
+        holder.fvtBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot ds = task.getResult();
+                        if (ds.getData().get("favInvitationsList") != null) {
+                            ArrayList<String> favInvitationIDs = (ArrayList<String>) ds.get("favInvitationsList");
+                            favInvitationIDs.add(invitationID);
+                            db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("favInvitationsList", favInvitationIDs);
+                        } else {
+                            ArrayList<String> favs = new ArrayList<>();
+                            favs.add(invitationID);
+                            db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("favInvitationsList", favs);
+                        }
+                    }
+                });
+            }
+        });
+
+        holder.unFvtBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        DocumentSnapshot ds = task.getResult();
+                        ArrayList<String> favInvitationIDs = (ArrayList<String>) ds.get("favInvitationsList");
+                        favInvitationIDs.remove(invitationID);
+                        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("favInvitationsList", favInvitationIDs);
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -767,6 +834,7 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
         TextView nameTv, locationTv, datePostedTv;
         Button messageButton, deleteButton, sendButton;
         Button editInv, trashInv;
+        ImageButton fvtBtn, unFvtBtn;
         public MyHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -778,6 +846,8 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
             sendButton = itemView.findViewById(R.id.submitInvite);
             editInv = itemView.findViewById(R.id.editPost);
             trashInv = itemView.findViewById(R.id.trashInv);
+            fvtBtn = itemView.findViewById(R.id.fvt_inv);
+            unFvtBtn = itemView.findViewById(R.id.unfvt_inv);
         }
 
     }
