@@ -268,6 +268,13 @@ public class AdapterInvitations extends RecyclerView.Adapter<AdapterInvitations.
                                     responseMap.put("accepted", false);
 
                                     db.collection("responses").document(responseID).set(responseMap);
+
+                                    if (documentSnapshot.getData().get("token") != null && documentSnapshot.getData().get("token").toString() != "") {
+                                        FCMSend.pushNotification(context,
+                                                documentSnapshot.getData().get("token").toString(),
+                                                "New response to invitation!",
+                                                "For " + inv.home.get("location"));
+                                    }
                                     popupWindow.dismiss();
                                 }
                             }

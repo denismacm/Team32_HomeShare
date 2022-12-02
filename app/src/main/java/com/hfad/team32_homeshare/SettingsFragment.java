@@ -47,6 +47,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -104,8 +105,13 @@ public class SettingsFragment extends Fragment {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String userID = firebaseAuth.getCurrentUser().getUid();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                DocumentReference ref = db.collection("users").document(userID);
+                ref.update("token", "");
                 firebaseAuth.signOut();
                 gsc.signOut();
+
                 checkUser();
             }
         });
@@ -130,6 +136,17 @@ public class SettingsFragment extends Fragment {
                 });
             }
         });
+
+//        Button testBtn = (Button) view.findViewById(R.id.testBtn);
+//        testBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                FCMSend.pushNotification(getActivity(),
+//                        "fc_4k5eDQbKdj6_0foS9qz:APA91bEB3KW3n50mWI-nWxTeaqF1mPpiL-C_3BAhZ2ggMt2Ye2i5wlNhU4mVZTv3CC0U7tKrnUhP1NiMkRjkgPCrPqLrZWrxFlZejqLMa7E57ZiEYldeMv7jgrOyK0vaWu0DhgZOVzZo",
+//                        "Hi",
+//                        "How are you?");
+//            }
+//        });
 
         return view;
     }

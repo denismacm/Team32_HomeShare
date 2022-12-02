@@ -237,6 +237,13 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                                                                  db.collection("responses").document(randResID).set(responseMap);
                                                              }
                                                              db.collection("invitations").document(invID).update("numSpotsLeft", numSp);
+
+                                                             if (documentSnapshot.getData().get("token") != null && documentSnapshot.getData().get("token").toString() != "") {
+                                                                 FCMSend.pushNotification(context,
+                                                                         documentSnapshot.getData().get("token").toString(),
+                                                                         "Response to invitation is accepted!",
+                                                                         getMessage);
+                                                             }
                                                              popupWindow.dismiss();
                                                          }
                                                      }
@@ -347,6 +354,13 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                                                 responseMap.put("senderID", firebaseAuth.getCurrentUser().getUid());
 
                                                 db.collection("responses").document(randResID).set(responseMap);
+
+                                                if (documentSnapshot.getData().get("token") != null && documentSnapshot.getData().get("token").toString() != "") {
+                                                    FCMSend.pushNotification(context,
+                                                            documentSnapshot.getData().get("token").toString(),
+                                                            "New message!",
+                                                            getMessage);
+                                                }
                                                 popupWindow.dismiss();
                                             }
                                         }

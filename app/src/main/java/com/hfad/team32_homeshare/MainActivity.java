@@ -37,8 +37,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.hfad.team32_homeshare.databinding.ActivityMainBinding;
 
 import java.text.SimpleDateFormat;
@@ -464,6 +466,27 @@ public class MainActivity extends AppCompatActivity {
             // user is already logged in
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
+        } else {
+
+            // User is logged in, get token and update user field
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+                @Override
+                public void onComplete(@NonNull Task<String> task) {
+                    if (!task.isSuccessful()) {
+                        return;
+                    }
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String token = task.getResult();
+                    System.out.println("TOKEN: " + token);
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    DocumentReference ref = db.collection("users").document(firebaseUser.getUid());
+                    System.out.println(firebaseUser.getUid());
+                    ref.update("token", token);
+
+                    System.out.println("TOKEN was added to User's Firestore");
+                }
+            });
         }
     }
 }
