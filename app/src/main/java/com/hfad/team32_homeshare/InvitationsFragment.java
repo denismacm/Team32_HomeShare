@@ -25,6 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -53,6 +54,8 @@ public class InvitationsFragment extends Fragment {
             "Year Posted YYYY (filter before)", "Favorites"};
     private String[] order = new String[]{"Ascending", "Descending"};
 
+    private boolean displayFavorites;
+
     public InvitationsFragment() {
         // Required empty public constructor
     }
@@ -62,6 +65,7 @@ public class InvitationsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         declinedInvitationIDs = new ArrayList<>();
+        displayFavorites = false;
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_invitations, container, false);
         InitializeCardView(view);
@@ -126,6 +130,10 @@ public class InvitationsFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     }else if (qu.equals("Favorites")) {
                         //Collections.sort(invitationsList, Comparator.comparing(Invitation::));
+//                        updatefavInvitations();
+//                        Toast.makeText(getActivity(), "Hi", Toast.LENGTH_LONG).show();
+//                        System.out.println("USERID = " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+//                        displayFavorites = true;
                         adapter.notifyDataSetChanged();
                     } else {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getFullName));
@@ -171,6 +179,7 @@ public class InvitationsFragment extends Fragment {
                         adapter.notifyDataSetChanged();
                     } else if (qu.equals("Favorites")) {
                         //Collections.sort(invitationsList, Comparator.comparing(Invitation::));
+//                        updatefavInvitations();
                         adapter.notifyDataSetChanged();
                     }else {
                         Collections.sort(invitationsList, Comparator.comparing(Invitation::getFullName));
@@ -208,6 +217,7 @@ public class InvitationsFragment extends Fragment {
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
+                displayFavorites = false;
                 invitationsList.clear();
                 CreateDataForCards(view);
             }
@@ -221,7 +231,7 @@ public class InvitationsFragment extends Fragment {
                 String text = et.getText().toString().trim().toLowerCase();
                 String query = spin.getSelectedItem().toString();
                 updateDeclinedInvitations();
-                updatefavInvitations();
+//                updatefavInvitations();
 //                if (text.equals("")) {
 //                    invitationsList.clear();
 //                    CreateDataForCards(view);
@@ -641,6 +651,8 @@ public class InvitationsFragment extends Fragment {
                         });
                     } catch (Exception e) {
                     }
+                } else if (query.equals("Favorites")) {
+                    updatefavInvitations();
                 }
 //                textView.setText(text+query);
 //                Toast.makeText(view.getContext(), text, Toast.LENGTH_LONG);
@@ -665,7 +677,7 @@ public class InvitationsFragment extends Fragment {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         updateDeclinedInvitations();
-        updatefavInvitations();
+//        updatefavInvitations();
         db.collection("invitations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -726,8 +738,51 @@ public class InvitationsFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
+                    invitationsList.clear();
                     DocumentSnapshot ds = task.getResult();
-                    favInvitationIDs = (ArrayList<String>) ds.get("favInvitationsList");
+                    if (ds.getData().get("favInvitationsList") != null) {
+                        favInvitationIDs = (ArrayList<String>) ds.get("favInvitationsList");
+                        db.collection("invitations").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        String ownerID = document.get("ownerID").toString();
+                                        String invitationID = document.getId();
+                                        if (favInvitationIDs.contains(invitationID)) {
+                                            db.collection("users").document(ownerID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        DocumentSnapshot doc = task.getResult();
+                                                        String fullName = doc.get("fullName").toString();
+                                                        String ownerGender = doc.get("gender").toString();
+                                                        int ownerClassStandingNum = Integer.parseInt(doc.get("classStandingNum").toString());
+                                                        Invitation inv = new Invitation();
+                                                        inv.fullName = fullName;
+                                                        inv.ownerGender = ownerGender;
+                                                        inv.ownerClassStandingNum = ownerClassStandingNum;
+                                                        inv.invitationID = invitationID;
+                                                        inv.ownerID = ownerID;
+                                                        inv.date = document.get("date").toString();
+                                                        inv.home = (Map<String, Object>) document.get("home");
+                                                        inv.numRoommatesCapacity = Integer.parseInt(document.get("numRoommatesCapacity").toString());
+                                                        inv.numSpotsLeft = Integer.parseInt(document.get("numSpotsLeft").toString());
+                                                        inv.expectation = document.get("expectation").toString();
+                                                        invitationsList.add(inv);
+                                                        adapter.notifyDataSetChanged();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        ArrayList<String> emptyFavs = new ArrayList<>();
+                        db.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update("favInvitationsList", emptyFavs);
+                    }
                 }
             }
         });
