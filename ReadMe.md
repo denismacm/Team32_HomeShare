@@ -1,5 +1,12 @@
 # HomeShare README
 
+## 2.5 NEW FEATURES (Sprint)
+We implemented four new features since 2.4 during our sprint:
+- Notifications (PushNotificationService.java, FCMSend.Java)
+- Splash screen launch page (SplashActivity.java)
+- Adding invitations to a favorites list
+- Dedicated user profile page (ProfileActivity.java)
+
 ## Creating Virtual Emulator
 To run our app, you must first create an emulator by selecting menu “Tools => Device Manager” and choose “Pixel 2.”
 Once you click "Pixel 2," you must choose “Nougat API 24 Android 7.0 x86” when told to "Select a System Image."

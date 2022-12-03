@@ -3,6 +3,7 @@ package com.hfad.team32_homeshare;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.text.Html;
@@ -121,7 +122,14 @@ public class AdapterResponses extends RecyclerView.Adapter<AdapterResponses.MyHo
                         img.setImageBitmap(bitmap);
                     }
                 });
-
+                popupView.findViewById(R.id.goToProfile).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent i = new Intent(context, UserPageActivity.class);
+                        i.putExtra("userID", senderID);
+                        context.startActivity(i);
+                    }
+                });
                 popupView.findViewById(R.id.dismiss).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
